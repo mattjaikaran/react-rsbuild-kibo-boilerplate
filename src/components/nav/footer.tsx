@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Github } from 'lucide-react'
+import { Code2 } from 'lucide-react'
 
 interface FooterProps {
   className?: string
@@ -17,7 +17,7 @@ export function Footer({ className }: FooterProps) {
       {
         name: 'GitHub',
         href: 'https://github.com',
-        icon: Github,
+        icon: Code2,
       },
     ],
   }

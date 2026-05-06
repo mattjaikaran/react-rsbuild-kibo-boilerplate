@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Github } from 'lucide-react'
+import { ArrowRight, Code2 } from 'lucide-react'
 
 interface HeroProps {
   title?: string
@@ -58,7 +58,7 @@ export function Hero({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github className="mr-2 h-4 w-4" />
+                <Code2 className="mr-2 h-4 w-4" />
                 {secondaryAction.label}
               </a>
             </Button>

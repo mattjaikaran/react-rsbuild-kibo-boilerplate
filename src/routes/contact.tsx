@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react'
+import { Briefcase, Code2, Mail, MessageCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/contact')({
   component: ContactPage,
@@ -94,7 +94,7 @@ function ContactPage() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <Github className="h-5 w-5" />
+                    <Code2 className="h-5 w-5" />
                   </a>
                   <a
                     href="https://twitter.com"
@@ -102,7 +102,7 @@ function ContactPage() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <Twitter className="h-5 w-5" />
+                    <MessageCircle className="h-5 w-5" />
                   </a>
                   <a
                     href="https://linkedin.com"
@@ -110,7 +110,7 @@ function ContactPage() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <Linkedin className="h-5 w-5" />
+                    <Briefcase className="h-5 w-5" />
                   </a>
                 </div>
               </div>
