@@ -99,3 +99,12 @@ export const createMySlice: StateCreator<MySlice> = (set) => ({
   increment: () => set((s) => ({ count: s.count + 1 })),
 })
 ```
+
+## Supply Chain Protection
+
+All JS/TS dependencies must use exact versions — no `^` or `~` in `package.json`.
+
+- **Adding packages**: `bun add pkg@x.y.z` — never `bun add pkg` (adds `^` by default)
+- **Upgrading**: `bun add pkg@latest` then commit the updated lockfile
+- **Never re-introduce** `^` or `~` when editing `package.json`
+- Global cooldown active: `~/.npmrc` has `save-exact=true` + 7-day `min-release-age`; `~/.bunfig.toml` has `minimumReleaseAge=604800`
