@@ -1,12 +1,20 @@
+const numberFormatCache = new Map<string, Intl.NumberFormat>()
+
+function getNumberFormat(locale: string, options?: Intl.NumberFormatOptions): Intl.NumberFormat {
+  const key = `${locale}:${JSON.stringify(options ?? {})}`
+  if (!numberFormatCache.has(key)) {
+    // react-doctor-disable-next-line react-doctor/js-hoist-intl
+    numberFormatCache.set(key, new Intl.NumberFormat(locale, options))
+  }
+  return numberFormatCache.get(key)!
+}
+
 export function formatCurrency(
   amount: number,
   currency: string = 'USD',
   locale: string = 'en-US',
 ): string {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-  }).format(amount)
+  return getNumberFormat(locale, { style: 'currency', currency }).format(amount)
 }
 
 export function formatNumber(
@@ -14,7 +22,7 @@ export function formatNumber(
   locale: string = 'en-US',
   options?: Intl.NumberFormatOptions,
 ): string {
-  return new Intl.NumberFormat(locale, options).format(value)
+  return getNumberFormat(locale, options).format(value)
 }
 
 export function formatPercentage(value: number, decimals: number = 1): string {

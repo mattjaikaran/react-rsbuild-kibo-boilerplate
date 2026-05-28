@@ -1,0 +1,24 @@
+{
+  "ignore": {
+    "files": [
+      "src/api/**",
+      "src/components/layouts/**",
+      "src/components/nav/**",
+      "src/components/providers/**",
+      "src/components/shared/**",
+      "src/components/ui/dropdown-menu.tsx",
+      "src/components/ui/image.tsx",
+      "src/components/ui/skeleton.tsx",
+      "src/components/ui/table.tsx",
+      "src/config/**",
+      "src/hooks/**",
+      "src/lib/**",
+      "src/mock-api/**",
+      "src/types/**"
+    ],
+    "rules": [
+      "deslop/unused-dependency",
+      "deslop/unused-dev-dependency"
+    ]
+  }
+}

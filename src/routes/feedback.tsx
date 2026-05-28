@@ -17,6 +17,7 @@ export const Route = createFileRoute('/feedback')({
   component: FeedbackPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function FeedbackPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,7 +59,7 @@ function FeedbackPage() {
         {feedbackTypes.map(type => (
           <Card key={type.value} className="text-center">
             <CardContent className="pt-6">
-              <type.icon className={`mx-auto mb-3 h-8 w-8 ${type.color}`} />
+              <type.icon className={`mx-auto mb-3 size-8 ${type.color}`} />
               <h3 className="font-semibold">{type.label}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {type.value === 'bug' &&
@@ -158,8 +159,8 @@ function FeedbackPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-start space-x-3 rounded-lg bg-muted/50 p-4">
-              <Lightbulb className="mt-0.5 h-5 w-5 text-yellow-500" />
+            <div className="flex items-start gap-x-3 rounded-lg bg-muted/50 p-4">
+              <Lightbulb className="mt-0.5 size-5 text-yellow-500" />
               <div className="flex-1">
                 <p className="font-medium">Add dark mode toggle to navbar</p>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -172,8 +173,8 @@ function FeedbackPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3 rounded-lg bg-muted/50 p-4">
-              <Bug className="mt-0.5 h-5 w-5 text-red-500" />
+            <div className="flex items-start gap-x-3 rounded-lg bg-muted/50 p-4">
+              <Bug className="mt-0.5 size-5 text-red-500" />
               <div className="flex-1">
                 <p className="font-medium">
                   Form validation not working on mobile
@@ -188,8 +189,8 @@ function FeedbackPage() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3 rounded-lg bg-muted/50 p-4">
-              <Star className="mt-0.5 h-5 w-5 text-blue-500" />
+            <div className="flex items-start gap-x-3 rounded-lg bg-muted/50 p-4">
+              <Star className="mt-0.5 size-5 text-blue-500" />
               <div className="flex-1">
                 <p className="font-medium">Improve loading states</p>
                 <p className="mt-1 text-sm text-muted-foreground">

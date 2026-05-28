@@ -71,6 +71,7 @@ const sampleTodos: Todo[] = [
   },
 ]
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function TodosPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [priorityFilter, setPriorityFilter] = useState('all')
@@ -113,7 +114,7 @@ function TodosPage() {
         </div>
         <Link to="/todos/create">
           <Button>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Add Todo
           </Button>
         </Link>
@@ -123,7 +124,7 @@ function TodosPage() {
         <div className="flex flex-col gap-4 sm:flex-row">
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 transform text-muted-foreground" />
               <Input
                 placeholder="Search todos..."
                 value={searchTerm}
@@ -167,7 +168,7 @@ function TodosPage() {
             {sampleTodos.length === 0 && (
               <Link to="/todos/create" className="mt-4 inline-block">
                 <Button>
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className="mr-2 size-4" />
                   Create Your First Todo
                 </Button>
               </Link>
@@ -177,11 +178,11 @@ function TodosPage() {
           filteredTodos.map(todo => (
             <div key={todo.id} className="rounded-lg border bg-card p-4">
               <div className="flex items-start gap-3">
-                <button className="mt-1">
+                <button type="button" className="mt-1">
                   {todo.completed ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <CheckCircle2 className="size-5 text-green-600" />
                   ) : (
-                    <Circle className="h-5 w-5 text-muted-foreground" />
+                    <Circle className="size-5 text-muted-foreground" />
                   )}
                 </button>
 
@@ -237,7 +238,7 @@ function TodosPage() {
                     size="sm"
                     className="text-destructive hover:text-destructive"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="size-4" />
                   </Button>
                 </div>
               </div>

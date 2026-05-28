@@ -4,12 +4,13 @@ export const Route = createFileRoute('/terms')({
   component: TermsPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function TermsPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <div className="prose prose-gray dark:prose-invert max-w-none">
         <h1 className="text-3xl font-bold tracking-tight">Terms of Service</h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground" suppressHydrationWarning>
           Last updated: {new Date().toLocaleDateString()}
         </p>
 

@@ -10,6 +10,7 @@ export const Route = createFileRoute('/auth/magic-link')({
   component: MagicLinkPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function MagicLinkPage() {
   const navigate = useNavigate()
 

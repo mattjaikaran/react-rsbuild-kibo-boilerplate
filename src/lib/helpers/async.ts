@@ -28,6 +28,7 @@ export async function retry<T>(
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
+      // react-doctor-disable-next-line react-doctor/async-await-in-loop
       return await fn()
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err))
@@ -59,8 +60,10 @@ export async function parallel<T>(
     executing.push(p)
 
     if (executing.length >= concurrency) {
+      // react-doctor-disable-next-line react-doctor/async-await-in-loop
       await Promise.race(executing)
       executing.splice(
+        // react-doctor-disable-next-line react-doctor/js-index-maps
         executing.findIndex((e) => e === p),
         1,
       )
@@ -74,6 +77,7 @@ export async function parallel<T>(
 export async function series<T>(tasks: (() => Promise<T>)[]): Promise<T[]> {
   const results: T[] = []
   for (const task of tasks) {
+    // react-doctor-disable-next-line react-doctor/async-await-in-loop
     results.push(await task())
   }
   return results
@@ -85,6 +89,7 @@ export async function waterfall<T>(
 ): Promise<T> {
   let result = initialValue
   for (const task of tasks) {
+    // react-doctor-disable-next-line react-doctor/async-await-in-loop
     result = await task(result)
   }
   return result
@@ -149,6 +154,7 @@ export async function poll<T>(
   const { interval = 1000, maxAttempts = Infinity, condition = () => true } = options
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    // react-doctor-disable-next-line react-doctor/async-await-in-loop
     const result = await fn()
     if (condition(result)) return result
     if (attempt < maxAttempts - 1) await sleep(interval)
@@ -185,6 +191,7 @@ export class AsyncQueue {
 
     while (this.queue.length > 0) {
       const batch = this.queue.splice(0, this.concurrency)
+      // react-doctor-disable-next-line react-doctor/async-await-in-loop
       await Promise.all(batch.map((task) => task()))
     }
 

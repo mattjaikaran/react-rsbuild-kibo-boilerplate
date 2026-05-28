@@ -10,6 +10,7 @@ export const Route = createFileRoute('/auth/register')({
   component: RegisterPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function RegisterPage() {
   const navigate = useNavigate()
 

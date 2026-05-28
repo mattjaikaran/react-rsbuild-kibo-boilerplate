@@ -13,6 +13,7 @@ export const Route = createFileRoute('/profile/')({
   component: ProfilePage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function ProfilePage() {
   const user = {
     firstName: 'Demo',
@@ -27,7 +28,7 @@ function ProfilePage() {
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/50 text-3xl font-bold text-primary-foreground">
+            <div className="flex size-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/50 text-3xl font-bold text-primary-foreground">
               {user.firstName[0]}
             </div>
 
@@ -37,15 +38,15 @@ function ProfilePage() {
               </h1>
               <div className="mt-2 flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <Mail className="h-4 w-4" />
+                  <Mail className="size-4" />
                   {user.email}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  Joined {new Date().toLocaleDateString()}
+                  <Calendar className="size-4" />
+                  <span suppressHydrationWarning>Joined {new Date().toLocaleDateString()}</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
+                  <MapPin className="size-4" />
                   Location not set
                 </span>
               </div>
@@ -54,13 +55,13 @@ function ProfilePage() {
             <div className="flex gap-2">
               <Button variant="outline" size="sm" asChild>
                 <Link to="/settings">
-                  <Edit className="mr-2 h-4 w-4" />
+                  <Edit className="mr-2 size-4" />
                   Edit Profile
                 </Link>
               </Button>
               <Button variant="ghost" size="icon" asChild>
                 <Link to="/settings">
-                  <Settings className="h-4 w-4" />
+                  <Settings className="size-4" />
                 </Link>
               </Button>
             </div>
@@ -117,16 +118,16 @@ function ProfilePage() {
         <CardContent>
           <div className="space-y-4">
             {[
-              { action: 'Completed task', item: 'Review documentation', time: '2 hours ago' },
-              { action: 'Created task', item: 'Update dependencies', time: '5 hours ago' },
-              { action: 'Updated profile', item: 'Changed email', time: '1 day ago' },
-              { action: 'Completed task', item: 'Fix login bug', time: '2 days ago' },
-            ].map((activity, i) => (
+              { id: '1', action: 'Completed task', item: 'Review documentation', time: '2 hours ago' },
+              { id: '2', action: 'Created task', item: 'Update dependencies', time: '5 hours ago' },
+              { id: '3', action: 'Updated profile', item: 'Changed email', time: '1 day ago' },
+              { id: '4', action: 'Completed task', item: 'Fix login bug', time: '2 days ago' },
+            ].map((activity) => (
               <div
-                key={i}
+                key={activity.id}
                 className="flex items-center gap-4 rounded-lg p-3 transition-colors hover:bg-muted/50"
               >
-                <div className="h-2 w-2 rounded-full bg-primary" />
+                <div className="size-2 rounded-full bg-primary" />
                 <div className="flex-1">
                   <p className="text-sm">
                     <span className="font-medium">{activity.action}</span>

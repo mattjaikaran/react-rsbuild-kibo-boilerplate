@@ -53,11 +53,13 @@ export const useRegister = (
 ) => {
   const { register } = useAuth()
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<AuthResponse, Error, RegisterCredentials>({
     mutationFn: authApi.register,
     onSuccess: data => {
       register(data as any)
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Account created!',
@@ -82,10 +84,12 @@ export const useMagicLink = (
   >
 ) => {
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<{ message: string }, Error, MagicLinkRequest>({
     mutationFn: authApi.magicLink,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Magic link sent!',
@@ -108,11 +112,13 @@ export const useVerifyMagicLink = (
 ) => {
   const { login } = useAuth()
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<AuthResponse, Error, string>({
     mutationFn: authApi.verifyMagicLink,
     onSuccess: data => {
       login(data as any)
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Logged in!',
@@ -202,6 +208,7 @@ export const useChangePassword = (
   >
 ) => {
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<
     { message: string },
@@ -210,6 +217,7 @@ export const useChangePassword = (
   >({
     mutationFn: authApi.changePassword,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Password changed',
@@ -234,10 +242,12 @@ export const useRequestPasswordReset = (
   >
 ) => {
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<{ message: string }, Error, string>({
     mutationFn: authApi.requestPasswordReset,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Reset email sent',
@@ -266,6 +276,7 @@ export const useResetPassword = (
   >
 ) => {
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation<
     { message: string },
@@ -274,6 +285,7 @@ export const useResetPassword = (
   >({
     mutationFn: authApi.resetPassword,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Password reset',

@@ -99,6 +99,7 @@ const generateId = () => Math.random().toString(36).substr(2, 9)
 export const mockApi = {
   auth: {
     login: async (credentials: { email: string; password: string }) => {
+      // react-doctor-disable-next-line react-doctor/async-defer-await
       await delay(800)
       if (
         credentials.email === 'demo@example.com' &&

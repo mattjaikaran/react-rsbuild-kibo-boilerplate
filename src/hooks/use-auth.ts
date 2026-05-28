@@ -20,11 +20,13 @@ export const useLogin = (
 ) => {
   const { login } = useAuth()
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: data => {
       login(data as any)
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Welcome back!',
@@ -47,11 +49,13 @@ export const useRegister = (
 ) => {
   const { register } = useAuth()
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.register,
     onSuccess: data => {
       register(data as any)
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Account created!',
@@ -73,10 +77,12 @@ export const useMagicLink = (
   options?: UseMutationOptions<{ message: string }, Error, MagicLinkRequest>
 ) => {
   const { addNotification } = useUI()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.magicLink,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
         title: 'Magic link sent!',

@@ -108,9 +108,9 @@ export function LoginForm({
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
+                        <EyeOff className="size-4" />
                       ) : (
-                        <Eye className="h-4 w-4" />
+                        <Eye className="size-4" />
                       )}
                       <span className="sr-only">
                         {showPassword ? 'Hide password' : 'Show password'}
@@ -129,7 +129,7 @@ export function LoginForm({
             disabled={isLoading}
           >
             {isLoading && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 size-4 animate-spin" />
             )}
             Sign In
           </Button>

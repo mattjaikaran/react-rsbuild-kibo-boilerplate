@@ -10,6 +10,7 @@ export const Route = createFileRoute('/contact')({
   component: ContactPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -75,8 +76,8 @@ function ContactPage() {
               <CardTitle>Get in touch</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-muted-foreground" />
+              <div className="flex items-center gap-x-3">
+                <Mail className="size-5 text-muted-foreground" />
                 <div>
                   <p className="font-medium">Email</p>
                   <p className="text-sm text-muted-foreground">
@@ -87,14 +88,14 @@ function ContactPage() {
 
               <div className="border-t pt-4">
                 <p className="mb-3 font-medium">Follow us</p>
-                <div className="flex space-x-4">
+                <div className="flex gap-x-4">
                   <a
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <Code2 className="h-5 w-5" />
+                    <Code2 className="size-5" />
                   </a>
                   <a
                     href="https://twitter.com"
@@ -102,7 +103,7 @@ function ContactPage() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <MessageCircle className="h-5 w-5" />
+                    <MessageCircle className="size-5" />
                   </a>
                   <a
                     href="https://linkedin.com"
@@ -110,7 +111,7 @@ function ContactPage() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <Briefcase className="h-5 w-5" />
+                    <Briefcase className="size-5" />
                   </a>
                 </div>
               </div>

@@ -25,7 +25,7 @@ export function groupBy<T>(arr: T[], key: keyof T | ((item: T) => string)): Reco
 }
 
 export function sortBy<T>(arr: T[], key: keyof T | ((item: T) => number | string), order: 'asc' | 'desc' = 'asc'): T[] {
-  return [...arr].sort((a, b) => {
+  return arr.toSorted((a, b) => {
     const aVal = typeof key === 'function' ? key(a) : a[key]
     const bVal = typeof key === 'function' ? key(b) : b[key]
     const comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0

@@ -68,7 +68,7 @@ function SkeletonAvatar({
 function SkeletonCard({ className }: { className?: string }) {
   return (
     <div className={cn('space-y-4 rounded-lg border p-4', className)}>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center gap-x-4">
         <SkeletonAvatar />
         <div className="flex-1 space-y-2">
           <Skeleton className="h-4 w-1/2" />
@@ -88,7 +88,7 @@ function SkeletonTableRow({
   className?: string
 }) {
   return (
-    <div className={cn('flex items-center space-x-4 py-3', className)}>
+    <div className={cn('flex items-center gap-x-4 py-3', className)}>
       {Array.from({ length: columns }).map((_, i) => (
         <Skeleton
           key={i}
@@ -111,7 +111,7 @@ function SkeletonTable({
 }) {
   return (
     <div className={cn('space-y-1', className)}>
-      <div className="flex items-center space-x-4 border-b py-3">
+      <div className="flex items-center gap-x-4 border-b py-3">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton
             key={i}
@@ -152,7 +152,7 @@ function SkeletonStatCard({ className }: { className?: string }) {
     <div className={cn('space-y-2 rounded-lg border p-6', className)}>
       <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-24" />
-        <Skeleton className="h-8 w-8" circle />
+        <Skeleton className="size-8" circle />
       </div>
       <Skeleton className="h-8 w-16" />
       <Skeleton className="h-3 w-20" />
@@ -162,8 +162,8 @@ function SkeletonStatCard({ className }: { className?: string }) {
 
 function SkeletonListItem({ className }: { className?: string }) {
   return (
-    <div className={cn('flex items-center space-x-4 py-3', className)}>
-      <Skeleton className="h-2 w-2" circle />
+    <div className={cn('flex items-center gap-x-4 py-3', className)}>
+      <Skeleton className="size-2" circle />
       <div className="flex-1 space-y-1">
         <Skeleton className="h-4 w-3/4" />
         <Skeleton className="h-3 w-1/2" />

@@ -14,6 +14,7 @@ export const Route = createFileRoute('/examples')({
   component: ExamplesPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function ExamplesPage() {
   return (
     <div className="space-y-8">

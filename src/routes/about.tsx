@@ -10,6 +10,7 @@ export const Route = createFileRoute('/about')({
   component: AboutPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function AboutPage() {
   const stack = [
     { name: 'React 19', description: 'UI library' },
@@ -36,7 +37,7 @@ function AboutPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">About This Boilerplate</h1>
       <p className="text-muted-foreground">
-        A production-ready React starter powered by Rsbuild and Kibo UI —
+        A production-ready React starter powered by Rsbuild and Kibo UI,
         combining Rust-based build tooling with advanced UI components for
         dashboards, project management, and data-heavy applications.
       </p>

@@ -47,10 +47,14 @@ export const useApiPost = <
   url: string,
   options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
 ) => {
+  const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
     mutationFn: async (data: TVariables) => {
       const response = await apiClient.post<ApiResponse<TData>>(url, data)
       return response.data.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [url] })
     },
     ...options,
   })
@@ -64,10 +68,14 @@ export const useApiPut = <
   url: string,
   options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
 ) => {
+  const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
     mutationFn: async (data: TVariables) => {
       const response = await apiClient.put<ApiResponse<TData>>(url, data)
       return response.data.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [url] })
     },
     ...options,
   })
@@ -81,10 +89,14 @@ export const useApiPatch = <
   url: string,
   options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
 ) => {
+  const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
     mutationFn: async (data: TVariables) => {
       const response = await apiClient.patch<ApiResponse<TData>>(url, data)
       return response.data.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [url] })
     },
     ...options,
   })
@@ -94,10 +106,14 @@ export const useApiDelete = <TData = unknown, TError = Error>(
   url: string,
   options?: Omit<UseMutationOptions<TData, TError, void>, 'mutationFn'>
 ) => {
+  const queryClient = useQueryClient()
   return useMutation<TData, TError, void>({
     mutationFn: async () => {
       const response = await apiClient.delete<ApiResponse<TData>>(url)
       return response.data.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [url] })
     },
     ...options,
   })
@@ -107,10 +123,14 @@ export const useApiDeleteById = <TData = unknown, TError = Error>(
   baseUrl: string,
   options?: Omit<UseMutationOptions<TData, TError, string>, 'mutationFn'>
 ) => {
+  const queryClient = useQueryClient()
   return useMutation<TData, TError, string>({
     mutationFn: async (id: string) => {
       const response = await apiClient.delete<ApiResponse<TData>>(`${baseUrl}/${id}`)
       return response.data.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [baseUrl] })
     },
     ...options,
   })

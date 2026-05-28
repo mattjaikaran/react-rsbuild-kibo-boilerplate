@@ -28,7 +28,7 @@ export function Navbar({ className }: NavbarProps) {
             </Link>
           </div>
 
-          <div className="hidden items-center space-x-8 md:flex">
+          <div className="hidden items-center gap-x-8 md:flex">
             {navigation.map(item => (
               <Link
                 key={item.name}
@@ -43,9 +43,9 @@ export function Navbar({ className }: NavbarProps) {
             ))}
           </div>
 
-          <div className="hidden items-center space-x-4 md:flex">
+          <div className="hidden items-center gap-x-4 md:flex">
             <ThemeToggle />
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               <Button variant="ghost" asChild>
                 <Link to={'/auth/login' as string}>Sign In</Link>
               </Button>
@@ -55,7 +55,7 @@ export function Navbar({ className }: NavbarProps) {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 md:hidden">
+          <div className="flex items-center gap-x-2 md:hidden">
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -63,9 +63,9 @@ export function Navbar({ className }: NavbarProps) {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="size-6" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="size-6" />
               )}
             </Button>
           </div>

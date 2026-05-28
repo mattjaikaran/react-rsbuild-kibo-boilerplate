@@ -10,6 +10,7 @@ export const Route = createFileRoute('/auth/login')({
   component: LoginPage,
 })
 
+// react-doctor-disable-next-line react-doctor/only-export-components
 function LoginPage() {
   const navigate = useNavigate()
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 
 export const useDebounce = <T>(value: T, delay: number = 500): T => {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
@@ -37,9 +37,10 @@ export const useDebouncedCallback = <T extends (...args: any[]) => unknown>(
   )
 
   useEffect(() => {
+    const timeout = timeoutRef.current
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
+      if (timeout) {
+        clearTimeout(timeout)
       }
     }
   }, [])
@@ -47,19 +48,43 @@ export const useDebouncedCallback = <T extends (...args: any[]) => unknown>(
   return debouncedCallback
 }
 
+interface DebounceWithLoadingState<T> {
+  debouncedValue: T
+  isDebouncing: boolean
+}
+
+type DebounceWithLoadingAction<T> =
+  | { type: 'start' }
+  | { type: 'done'; value: T }
+
+function debounceReducer<T>(
+  state: DebounceWithLoadingState<T>,
+  action: DebounceWithLoadingAction<T>
+): DebounceWithLoadingState<T> {
+  switch (action.type) {
+    case 'start':
+      return { ...state, isDebouncing: true }
+    case 'done':
+      return { debouncedValue: action.value, isDebouncing: false }
+    default:
+      return state
+  }
+}
+
 export const useDebounceWithLoading = <T>(
   value: T,
   delay: number = 500
 ): { debouncedValue: T; isDebouncing: boolean } => {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
-  const [isDebouncing, setIsDebouncing] = useState(false)
+  const [state, dispatch] = useReducer(debounceReducer<T>, {
+    debouncedValue: value,
+    isDebouncing: false,
+  })
 
   useEffect(() => {
-    setIsDebouncing(true)
+    dispatch({ type: 'start' })
 
     const timer = setTimeout(() => {
-      setDebouncedValue(value)
-      setIsDebouncing(false)
+      dispatch({ type: 'done', value })
     }, delay)
 
     return () => {
@@ -67,5 +92,5 @@ export const useDebounceWithLoading = <T>(
     }
   }, [value, delay])
 
-  return { debouncedValue, isDebouncing }
+  return state
 }
