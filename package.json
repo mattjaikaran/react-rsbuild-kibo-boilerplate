@@ -18,7 +18,10 @@
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf dist node_modules .rsbuild",
     "clean:dist": "rm -rf dist .rsbuild",
-    "check": "bun run typecheck && bun run lint && bun run test",
+    "check": "bun run typecheck && bun run lint && bun run test && bun run check-conventions && bun run check-dependencies",
+    "check-conventions": "bun run scripts/check_conventions.ts",
+    "check-dependencies": "bun run scripts/check_dependencies.ts",
+    "gauntlet": "bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies",
     "prepare": "echo 'ready'",
     "doctor": "npx react-doctor@latest"
   },

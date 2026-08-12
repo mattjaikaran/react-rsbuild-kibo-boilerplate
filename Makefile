@@ -1,4 +1,4 @@
-.PHONY: help dev build preview clean install lint format typecheck test check docker-build docker-up docker-down
+.PHONY: help dev build preview clean install lint format typecheck test check check-conventions check-dependencies gauntlet docker-build docker-up docker-down
 
 help: ## show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -50,8 +50,17 @@ test-ui: ## run tests with vitest ui
 test-coverage: ## run tests with coverage
 	bun run test:coverage
 
-check: ## run typecheck + lint + test
+check: ## run typecheck + lint + test + convention + dependency gates
 	bun run check
+
+check-conventions: ## run convention checks
+	bun run check-conventions
+
+check-dependencies: ## verify dependencies are documented
+	bun run check-dependencies
+
+gauntlet: ## run all quality gates
+	bun run gauntlet
 
 # Docker
 docker-build: ## build docker image
