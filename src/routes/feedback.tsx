@@ -18,7 +18,7 @@ export const Route = createFileRoute('/feedback')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function FeedbackPage() {
+export function FeedbackPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Feedback form submitted')

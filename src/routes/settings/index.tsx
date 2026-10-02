@@ -11,31 +11,23 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import {
-  Bell,
   Globe,
   Key,
   Palette,
   Save,
   Shield,
-  User,
 } from 'lucide-react'
 import { useState } from 'react'
+import { SettingsNavigation } from './-components/settings-navigation'
+import type { SettingsTab } from './-components/settings-navigation'
 
 export const Route = createFileRoute('/settings/')({
   component: SettingsPage,
 })
 
-type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance'
-
-const tabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
-  { id: 'profile', label: 'Profile', icon: User },
-  { id: 'notifications', label: 'Notifications', icon: Bell },
-  { id: 'security', label: 'Security', icon: Shield },
-  { id: 'appearance', label: 'Appearance', icon: Palette },
-]
 
 // react-doctor-disable-next-line react-doctor/only-export-components, react-doctor/no-giant-component
-function SettingsPage() {
+export function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile')
 
   const [profileForm, setProfileForm] = useState({
@@ -78,26 +70,7 @@ function SettingsPage() {
       </div>
 
       <div className="flex flex-col gap-6 lg:flex-row">
-        <nav className="shrink-0 lg:w-64">
-          <div className="space-y-1 lg:sticky lg:top-24">
-            {tabs.map(tab => (
-              <button
-                type="button"
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  'flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
-                  activeTab === tab.id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                )}
-              >
-                <tab.icon className="size-5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </nav>
+        <SettingsNavigation activeTab={activeTab} onSelect={setActiveTab} />
 
         <div className="max-w-2xl flex-1">
           {activeTab === 'profile' && (

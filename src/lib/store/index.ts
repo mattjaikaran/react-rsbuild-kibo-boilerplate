@@ -103,9 +103,9 @@ export const useApiConfig = () => useStore(state => state.config.api)
 export const useAuthConfig = () => useStore(state => state.config)
 export const useEnvConfig = () => useStore(state => state.config.env)
 
-export const initializeStore = () => {
+export const initializeStore = async () => {
   const { initializeAuth, setTheme, theme } = useStore.getState()
-  initializeAuth()
+  await initializeAuth()
 
   const savedTheme = localStorage.getItem('theme')
   if (

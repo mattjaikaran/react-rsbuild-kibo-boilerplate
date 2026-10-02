@@ -72,7 +72,7 @@ const sampleTodos: Todo[] = [
 ]
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function TodosPage() {
+export function TodosPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')

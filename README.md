@@ -87,6 +87,39 @@ src/
 └── types/            # TypeScript type definitions
 ```
 
+## Authentication
+
+Use the Django Ninja boilerplate API. Set `PUBLIC_API_URL` to its API prefix,
+for example `http://localhost:8000/api`. Run Rsbuild with
+`bun --bun run dev` or `bun --bun run build` to use your Bun runtime.
+
+The login form calls `POST /auth/login` with `email` and `password`.
+The API returns `{ token, refresh, user }`; the client maps those tokens to
+`accessToken` and `refreshToken`. Registration uses `/auth/signup`, then
+login. It uses your email as the required username, so keep it within the
+backend's 100-character username limit.
+
+The store and transport share `auth_token:v1` and `refresh_token:v1`.
+Initialization calls `GET /auth/me`; it does not trust a cached user.
+A protected request with an invalid access token refreshes once through
+`POST /token/refresh` with `{ refresh }`, then repeats the request.
+Concurrent requests share the refresh. Refresh failure clears the session.
+
+Select **Sign Out** to send the current refresh token to `/auth/logout`.
+The backend blacklists it. The client clears local tokens even if server
+logout fails and reports that failure instead of claiming server success.
+Passwordless requests use `/auth/passwordless/login/request` and
+`/auth/passwordless/login/verify`.
+
+The real auth store does not use `src/mock-api`. Example dashboard task data
+remain demonstration data; do not treat them as an authenticated task API.
+
+The table example keeps React Compiler disabled with `use no memo`.
+Its one `react-hooks/incompatible-library` call-site waiver covers TanStack
+Table's mutable API. Keep sorting, filtering, visibility, and pagination
+inside that uncompiled component; do not pass its callbacks to compiled
+components. All other lint rules remain active.
+
 ## Why Rsbuild + Kibo UI?
 
 - **Rsbuild**: Dev/prod parity with Rspack, SWC everywhere, webpack plugin compat

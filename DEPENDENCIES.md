@@ -53,7 +53,7 @@ listed here. Add a row when you add a dependency.
 | prettier-plugin-tailwindcss | 0.8.0 |
 | react | 19.2.5 |
 | react-day-picker | 9.6.4 |
-| react-doctor | 0.2.9 |
+| react-doctor | 0.9.14 |
 | react-dom | 19.2.5 |
 | react-hook-form | 7.75.0 |
 | recharts | 3.8.1 |
@@ -65,3 +65,9 @@ listed here. Add a row when you add a dependency.
 | vitest | 4.1.5 |
 | zod | 4.4.3 |
 | zustand | 5.0.13 |
+
+Use the local React Doctor script. It does not fetch `latest`, send telemetry,
+or run supply-chain checks. Keep `bun.lock` with the pinned dependency.
+TypeScript uses ES2023 library types for the existing `toSorted` helper.
+[ES2023 array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted)
+require a compatible browser or a polyfill.

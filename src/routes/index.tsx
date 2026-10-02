@@ -12,7 +12,7 @@ export const Route = createFileRoute('/')({
   component: HomePage,
 })
 
-function HomePage() {
+export function HomePage() {
   return (
     <div className="space-y-8">
       <section className="space-y-4 text-center">

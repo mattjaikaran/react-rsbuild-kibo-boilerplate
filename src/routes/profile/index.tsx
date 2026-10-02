@@ -14,7 +14,7 @@ export const Route = createFileRoute('/profile/')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function ProfilePage() {
+export function ProfilePage() {
   const user = {
     firstName: 'Demo',
     lastName: 'User',

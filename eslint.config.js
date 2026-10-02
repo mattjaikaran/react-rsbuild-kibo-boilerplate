@@ -25,10 +25,19 @@ export default [
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
+      ...tsPlugin.configs['eslint-recommended'].overrides[0].rules,
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': ['warn', {
+        allowConstantExport: true,
+        // TanStack route objects keep their framework HMR contract.
+        allowExportNames: ['Route'],
+      }],
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
+  },
+  {
+    files: ['src/test/**/*.{ts,tsx}', '**/*.{test,spec}.{ts,tsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
 ]

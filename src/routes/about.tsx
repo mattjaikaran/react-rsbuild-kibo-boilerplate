@@ -11,7 +11,7 @@ export const Route = createFileRoute('/about')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function AboutPage() {
+export function AboutPage() {
   const stack = [
     { name: 'React 19', description: 'UI library' },
     { name: 'Rsbuild', description: 'Rust-powered build tool (Rspack under the hood)' },

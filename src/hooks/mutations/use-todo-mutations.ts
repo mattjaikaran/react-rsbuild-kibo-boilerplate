@@ -103,11 +103,11 @@ export const useDeleteTodo = (
 }
 
 export const useToggleTodo = (
-  options?: Omit<UseMutationOptions<Todo, Error, string>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<Todo, Error, string, { previousTodo: Todo | undefined }>, 'mutationFn'>
 ) => {
   const queryClient = useQueryClient()
 
-  return useMutation<Todo, Error, string>({
+  return useMutation<Todo, Error, string, { previousTodo: Todo | undefined }>({
     mutationFn: todosApi.toggleTodo,
     onMutate: async id => {
       await queryClient.cancelQueries({ queryKey: todoQueryKeys.detail(id) })
@@ -122,7 +122,7 @@ export const useToggleTodo = (
 
       return { previousTodo }
     },
-    onError: (_, id, context: any) => {
+    onError: (_, id, context) => {
       if (context?.previousTodo) {
         queryClient.setQueryData(todoQueryKeys.detail(id), context.previousTodo)
       }

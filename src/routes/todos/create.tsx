@@ -6,7 +6,7 @@ export const Route = createFileRoute('/todos/create')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function CreateTodoPage() {
+export function CreateTodoPage() {
   const navigate = useNavigate()
 
   const handleSuccess = () => {

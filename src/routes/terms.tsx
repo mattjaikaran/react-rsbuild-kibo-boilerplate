@@ -5,7 +5,7 @@ export const Route = createFileRoute('/terms')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function TermsPage() {
+export function TermsPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <div className="prose prose-gray dark:prose-invert max-w-none">

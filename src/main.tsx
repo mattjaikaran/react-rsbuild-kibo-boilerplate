@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import { routeTree } from './routeTree.gen'
+import { initializeStore } from '@/lib/store'
 import './index.css'
 
 const queryClient = new QueryClient({
@@ -30,6 +31,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootElement = document.getElementById('root')!
+await initializeStore()
 
 createRoot(rootElement).render(
   <StrictMode>

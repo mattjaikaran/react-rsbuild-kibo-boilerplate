@@ -11,7 +11,7 @@ export const Route = createFileRoute('/contact')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function ContactPage() {
+export function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Contact form submitted')

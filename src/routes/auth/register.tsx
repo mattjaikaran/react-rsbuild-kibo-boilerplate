@@ -5,14 +5,18 @@ import {
   CardHeader,
 } from '@/components/ui/card'
 import { RegisterForm } from '@/forms/auth/register-form'
+import { useStore } from '@/lib/store'
 
 export const Route = createFileRoute('/auth/register')({
   component: RegisterPage,
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function RegisterPage() {
+export function RegisterPage() {
   const navigate = useNavigate()
+  const register = useStore(state => state.register)
+  const isLoading = useStore(state => state.isLoading)
+  const error = useStore(state => state.error)
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -20,9 +24,16 @@ function RegisterPage() {
         <Card>
           <CardHeader className="space-y-1" />
           <CardContent>
+            {error && <p role="alert" className="text-destructive">{error}</p>}
             <RegisterForm
-              onSubmit={async (data) => {
-                console.log('Register:', data)
+              isLoading={isLoading}
+              onSubmit={async data => {
+                try {
+                  await register(data)
+                  await navigate({ to: '/dashboard' })
+                } catch {
+                  // The store supplies the form's error message.
+                }
               }}
               onSwitchToLogin={() => {
                 navigate({ to: '/auth/login' })

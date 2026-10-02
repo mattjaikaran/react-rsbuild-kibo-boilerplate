@@ -1,6 +1,5 @@
 import {
   useState,
-  useRef,
   useCallback,
   type ReactNode,
   type SyntheticEvent,
@@ -59,13 +58,13 @@ function Image({
   onError,
   ...props
 }: ImageProps) {
-  const prevSrcRef = useRef(src)
+  const [previousSrc, setPreviousSrc] = useState(src)
   const [useFallback, setUseFallback] = useState(false)
   const [status, setStatus] = useState<LoadStatus>('loading')
 
   // Derived state during render — reset when src prop changes (no useEffect needed)
-  if (prevSrcRef.current !== src) {
-    prevSrcRef.current = src
+  if (previousSrc !== src) {
+    setPreviousSrc(src)
     setUseFallback(false)
     setStatus('loading')
   }

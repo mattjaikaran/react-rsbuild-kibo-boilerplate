@@ -19,14 +19,15 @@ export const useLogin = (
     'mutationFn'
   >
 ) => {
-  const { login } = useAuth()
+  const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation<AuthResponse, Error, LoginCredentials>({
     mutationFn: authApi.login,
     onSuccess: data => {
-      login(data as any)
+      setUser(data.user)
+      setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
@@ -51,14 +52,15 @@ export const useRegister = (
     'mutationFn'
   >
 ) => {
-  const { register } = useAuth()
+  const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation<AuthResponse, Error, RegisterCredentials>({
     mutationFn: authApi.register,
     onSuccess: data => {
-      register(data as any)
+      setUser(data.user)
+      setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
@@ -110,14 +112,15 @@ export const useMagicLink = (
 export const useVerifyMagicLink = (
   options?: Omit<UseMutationOptions<AuthResponse, Error, string>, 'mutationFn'>
 ) => {
-  const { login } = useAuth()
+  const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation<AuthResponse, Error, string>({
     mutationFn: authApi.verifyMagicLink,
     onSuccess: data => {
-      login(data as any)
+      setUser(data.user)
+      setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
@@ -147,9 +150,8 @@ export const useLogout = (
   const queryClient = useQueryClient()
 
   return useMutation<{ message: string }, Error, void>({
-    mutationFn: authApi.logout,
+    mutationFn: logout,
     onSuccess: () => {
-      logout()
       queryClient.clear()
       addNotification({
         type: 'success',
@@ -158,7 +160,6 @@ export const useLogout = (
       })
     },
     onError: () => {
-      logout()
       queryClient.clear()
       addNotification({
         type: 'warning',

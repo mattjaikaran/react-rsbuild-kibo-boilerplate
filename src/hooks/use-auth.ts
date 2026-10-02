@@ -18,14 +18,15 @@ import {
 export const useLogin = (
   options?: UseMutationOptions<AuthResponse, Error, LoginCredentials>
 ) => {
-  const { login } = useAuth()
+  const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: data => {
-      login(data as any)
+      setUser(data.user)
+      setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
@@ -47,14 +48,15 @@ export const useLogin = (
 export const useRegister = (
   options?: UseMutationOptions<AuthResponse, Error, RegisterCredentials>
 ) => {
-  const { register } = useAuth()
+  const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.register,
     onSuccess: data => {
-      register(data as any)
+      setUser(data.user)
+      setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
       addNotification({
         type: 'success',
@@ -106,9 +108,8 @@ export const useLogout = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: authApi.logout,
+    mutationFn: logout,
     onSuccess: () => {
-      logout()
       queryClient.clear()
       addNotification({
         type: 'success',
@@ -117,7 +118,6 @@ export const useLogout = () => {
       })
     },
     onError: () => {
-      logout()
       queryClient.clear()
       addNotification({
         type: 'warning',

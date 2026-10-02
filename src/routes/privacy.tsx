@@ -5,7 +5,7 @@ export const Route = createFileRoute('/privacy')({
 })
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function PrivacyPage() {
+export function PrivacyPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <div className="prose prose-gray dark:prose-invert max-w-none">

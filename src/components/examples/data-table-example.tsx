@@ -87,9 +87,12 @@ const columns: ColumnDef<Task>[] = [
 ]
 
 export function DataTableExample() {
+  'use no memo'
+  // TanStack Table returns mutable callbacks; keep this example uncompiled.
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- Reviewed mutable TanStack API; this component remains uncompiled.
   const table = useReactTable({
     data,
     columns,

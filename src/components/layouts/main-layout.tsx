@@ -1,7 +1,12 @@
-import { Link, Outlet } from '@tanstack/react-router'
+import { Link, Outlet, useNavigate } from '@tanstack/react-router'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
+import { Button } from '@/components/ui/button'
+import { useStore } from '@/lib/store'
 
 export function MainLayout() {
+  const isAuthenticated = useStore(state => state.isAuthenticated)
+  const logout = useStore(state => state.logout)
+  const navigate = useNavigate()
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -31,6 +36,19 @@ export function MainLayout() {
           </nav>
           <div className="ml-auto flex items-center gap-x-2">
             <ThemeToggle />
+            {isAuthenticated ? (
+              <Button variant="ghost" onClick={async () => {
+                try {
+                  await logout()
+                } catch {
+                  useStore.getState().setError('Signed out locally. Server logout failed.')
+                } finally {
+                  await navigate({ to: '/auth/login' })
+                }
+              }}>Sign Out</Button>
+            ) : (
+              <Button variant="ghost" asChild><Link to="/auth/login">Sign In</Link></Button>
+            )}
           </div>
         </div>
       </header>

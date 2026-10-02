@@ -91,7 +91,7 @@ function FAQItemCard({ item }: { item: FAQItem }) {
 }
 
 // react-doctor-disable-next-line react-doctor/only-export-components
-function FAQPage() {
+export function FAQPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <div className="text-center">

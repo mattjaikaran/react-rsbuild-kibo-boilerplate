@@ -1,4 +1,5 @@
 import { apiClient } from '@/api/client'
+import { AUTH_STORAGE } from '@/api/auth-storage'
 import type {
   AuthResponse,
   LoginCredentials,
@@ -9,32 +10,41 @@ import type {
 
 export const authApi = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const { data } = await apiClient.post('/auth/login', credentials)
-    return data
+    const { data } = await apiClient.post<{ token: string; refresh: string; user: User }>(
+      '/auth/login', credentials
+    )
+    return { user: data.user, tokens: { accessToken: data.token, refreshToken: data.refresh } }
   },
 
   register: async (credentials: RegisterCredentials): Promise<AuthResponse> => {
-    const { data } = await apiClient.post('/auth/register', credentials)
-    return data
+    await apiClient.post('/auth/signup', {
+      email: credentials.email,
+      username: credentials.email,
+      password: credentials.password,
+      firstName: credentials.firstName,
+      lastName: credentials.lastName,
+    })
+    return authApi.login({ email: credentials.email, password: credentials.password })
   },
 
   magicLink: async (request: MagicLinkRequest): Promise<{ message: string }> => {
-    const { data } = await apiClient.post('/auth/magic-link', request)
-    return data
+    const { data } = await apiClient.post<{ detail: string }>(
+      '/auth/passwordless/login/request', request
+    )
+    return { message: data.detail }
   },
 
   verifyMagicLink: async (token: string): Promise<AuthResponse> => {
-    const { data } = await apiClient.post('/auth/magic-link/verify', { token })
-    return data
+    const { data } = await apiClient.post<{ access: string; refresh: string; user: User }>(
+      '/auth/passwordless/login/verify', { token }
+    )
+    return { user: data.user, tokens: { accessToken: data.access, refreshToken: data.refresh } }
   },
 
   logout: async (): Promise<{ message: string }> => {
-    try {
-      const { data } = await apiClient.post('/auth/logout')
-      return data
-    } catch {
-      return { message: 'Logged out successfully' }
-    }
+    const refresh = localStorage.getItem(AUTH_STORAGE.refreshToken)
+    const { data } = await apiClient.post('/auth/logout', { refresh })
+    return data
   },
 
   getProfile: async (): Promise<User> => {
@@ -67,8 +77,10 @@ export const authApi = {
     return data
   },
 
-  refreshToken: async (refreshToken: string): Promise<{ accessToken: string }> => {
-    const { data } = await apiClient.post('/auth/refresh', { refreshToken })
-    return data
+  refreshToken: async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
+    const { data } = await apiClient.post<{ access: string; refresh?: string }>(
+      '/token/refresh', { refresh: refreshToken }
+    )
+    return { accessToken: data.access, refreshToken: data.refresh ?? refreshToken }
   },
 }

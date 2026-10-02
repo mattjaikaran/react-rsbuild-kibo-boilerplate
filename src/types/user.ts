@@ -1,6 +1,7 @@
-import type { BaseEntity, Theme } from './base'
+import type { Theme } from './base'
 
-export interface User extends BaseEntity {
+export interface User {
+  id: string
   email: string
   firstName: string
   lastName: string

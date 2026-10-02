@@ -12,7 +12,7 @@ export const Route = createFileRoute('/dashboard/')({
   component: DashboardPage,
 })
 
-function DashboardPage() {
+export function DashboardPage() {
   const stats = [
     { title: 'Total Tasks', value: 25, icon: CheckSquare, color: 'text-blue-500' },
     { title: 'Completed', value: 12, icon: Activity, color: 'text-emerald-500' },

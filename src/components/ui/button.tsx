@@ -57,5 +57,4 @@ function Button({
   )
 }
 
-// react-doctor-disable-next-line react-doctor/only-export-components
-export { Button, buttonVariants }
+export { Button }
