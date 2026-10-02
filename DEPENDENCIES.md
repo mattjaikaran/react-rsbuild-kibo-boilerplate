@@ -68,6 +68,10 @@ listed here. Add a row when you add a dependency.
 
 Use the local React Doctor script. It does not fetch `latest`, send telemetry,
 or run supply-chain checks. Keep `bun.lock` with the pinned dependency.
+Run `bun run doctor` with Node `^20.19.0 || >=22.13.0`, as declared by
+React Doctor. Do not use `bun --bun run doctor`: its IPC worker requires
+Node. A completed scan can still report warnings; an error-only blocking
+threshold does not make those warnings passes.
 TypeScript uses ES2023 library types for the existing `toSorted` helper.
 [ES2023 array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted)
 require a compatible browser or a polyfill.
