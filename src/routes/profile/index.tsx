@@ -1,19 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Edit, Mail, MapPin, Settings } from 'lucide-react'
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/profile/')({
   component: ProfilePage,
 })
 
-// react-doctor-disable-next-line react-doctor/only-export-components
 export function ProfilePage() {
   const user = {
     firstName: 'Demo',
@@ -83,9 +78,7 @@ export function ProfilePage() {
             <CardDescription>Completed</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-emerald-500">
-              {stats.completed}
-            </div>
+            <div className="text-3xl font-bold text-emerald-500">{stats.completed}</div>
           </CardContent>
         </Card>
         <Card>
@@ -93,9 +86,7 @@ export function ProfilePage() {
             <CardDescription>Pending</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-amber-500">
-              {stats.pending}
-            </div>
+            <div className="text-3xl font-bold text-amber-500">{stats.pending}</div>
           </CardContent>
         </Card>
         <Card>
@@ -118,7 +109,12 @@ export function ProfilePage() {
         <CardContent>
           <div className="space-y-4">
             {[
-              { id: '1', action: 'Completed task', item: 'Review documentation', time: '2 hours ago' },
+              {
+                id: '1',
+                action: 'Completed task',
+                item: 'Review documentation',
+                time: '2 hours ago',
+              },
               { id: '2', action: 'Created task', item: 'Update dependencies', time: '5 hours ago' },
               { id: '3', action: 'Updated profile', item: 'Changed email', time: '1 day ago' },
               { id: '4', action: 'Completed task', item: 'Fix login bug', time: '2 days ago' },
@@ -135,9 +131,7 @@ export function ProfilePage() {
                     <span className="text-muted-foreground">{activity.item}</span>
                   </p>
                 </div>
-                <span className="text-xs text-muted-foreground">
-                  {activity.time}
-                </span>
+                <span className="text-xs text-muted-foreground">{activity.time}</span>
               </div>
             ))}
           </div>

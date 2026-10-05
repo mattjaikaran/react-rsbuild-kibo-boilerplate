@@ -6,21 +6,10 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   circle?: boolean
 }
 
-function Skeleton({
-  className,
-  width,
-  height,
-  circle,
-  style,
-  ...props
-}: SkeletonProps) {
+function Skeleton({ className, width, height, circle, style, ...props }: SkeletonProps) {
   return (
     <div
-      className={cn(
-        'animate-pulse bg-muted',
-        circle ? 'rounded-full' : 'rounded-md',
-        className
-      )}
+      className={cn('animate-pulse bg-muted', circle ? 'rounded-full' : 'rounded-md', className)}
       style={{
         width: typeof width === 'number' ? `${width}px` : width,
         height: typeof height === 'number' ? `${height}px` : height,
@@ -55,13 +44,7 @@ function SkeletonText({
   )
 }
 
-function SkeletonAvatar({
-  size = 40,
-  className,
-}: {
-  size?: number
-  className?: string
-}) {
+function SkeletonAvatar({ size = 40, className }: { size?: number; className?: string }) {
   return <Skeleton width={size} height={size} circle className={className} />
 }
 
@@ -80,13 +63,7 @@ function SkeletonCard({ className }: { className?: string }) {
   )
 }
 
-function SkeletonTableRow({
-  columns = 4,
-  className,
-}: {
-  columns?: number
-  className?: string
-}) {
+function SkeletonTableRow({ columns = 4, className }: { columns?: number; className?: string }) {
   return (
     <div className={cn('flex items-center gap-x-4 py-3', className)}>
       {Array.from({ length: columns }).map((_, i) => (
@@ -127,13 +104,7 @@ function SkeletonTable({
   )
 }
 
-function SkeletonForm({
-  fields = 4,
-  className,
-}: {
-  fields?: number
-  className?: string
-}) {
+function SkeletonForm({ fields = 4, className }: { fields?: number; className?: string }) {
   return (
     <div className={cn('space-y-6', className)}>
       {Array.from({ length: fields }).map((_, i) => (

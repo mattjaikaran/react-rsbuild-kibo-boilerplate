@@ -1,13 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, AlertTriangle, CheckSquare, Clock } from 'lucide-react'
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/dashboard/')({
   component: DashboardPage,
 })
@@ -38,7 +34,7 @@ export function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map(stat => (
+        {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between gap-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
@@ -59,7 +55,7 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {recentTasks.map(task => (
+              {recentTasks.map((task) => (
                 <div
                   key={task.id}
                   className="flex items-center gap-3 rounded-lg bg-muted/50 p-3 transition-colors hover:bg-muted"
@@ -83,9 +79,7 @@ export function DashboardPage() {
                     >
                       {task.title}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {task.priority} priority
-                    </p>
+                    <p className="text-xs text-muted-foreground">{task.priority} priority</p>
                   </div>
                 </div>
               ))}
@@ -104,7 +98,7 @@ export function DashboardPage() {
                 { label: 'High', value: 8, color: 'bg-rose-500', total: 25 },
                 { label: 'Medium', value: 12, color: 'bg-amber-500', total: 25 },
                 { label: 'Low', value: 5, color: 'bg-sky-500', total: 25 },
-              ].map(item => (
+              ].map((item) => (
                 <div key={item.label} className="space-y-1">
                   <div className="flex justify-between text-sm">
                     <span>{item.label}</span>

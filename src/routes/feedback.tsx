@@ -12,16 +12,57 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Bug, Lightbulb, MessageSquare, Star } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useReducer } from 'react'
 
+const feedbackSchema = z.object({
+  name: z.string(),
+  email: z.union([z.string().email(), z.literal('')]),
+  type: z.enum(['bug', 'feature', 'improvement', 'general']),
+  title: z.string().trim().min(1),
+  description: z.string().trim().min(1),
+  priority: z.enum(['low', 'medium', 'high', 'critical']),
+})
+
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/feedback')({
   component: FeedbackPage,
 })
 
-// react-doctor-disable-next-line react-doctor/only-export-components
 export function FeedbackPage() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Feedback form submitted')
+  const form = useForm<z.infer<typeof feedbackSchema>>({
+    resolver: zodResolver(feedbackSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      type: 'general',
+      title: '',
+      description: '',
+      priority: 'medium',
+    },
+  })
+  const [draftSaved, markDraftSaved] = useReducer(() => true, false)
+  const handleSubmit = form.handleSubmit((values) =>
+    form.reset(values, { keepIsSubmitSuccessful: true }),
+  )
+  const saveDraft = () => {
+    sessionStorage.setItem('kibo-feedback-draft', JSON.stringify(form.getValues()))
+    markDraftSaved()
+  }
+  const restoreDraft = () => {
+    const saved = sessionStorage.getItem('kibo-feedback-draft')
+    if (!saved) return
+    try {
+      const parsed = feedbackSchema
+        .extend({ email: z.string(), title: z.string(), description: z.string() })
+        .safeParse(JSON.parse(saved))
+      if (parsed.success) form.reset(parsed.data)
+    } catch {
+      sessionStorage.removeItem('kibo-feedback-draft')
+    }
   }
 
   const feedbackTypes = [
@@ -56,20 +97,16 @@ export function FeedbackPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        {feedbackTypes.map(type => (
+        {feedbackTypes.map((type) => (
           <Card key={type.value} className="text-center">
             <CardContent className="pt-6">
               <type.icon className={`mx-auto mb-3 size-8 ${type.color}`} />
               <h3 className="font-semibold">{type.label}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                {type.value === 'bug' &&
-                  "Report issues or bugs you've encountered"}
-                {type.value === 'feature' &&
-                  'Suggest new features or functionality'}
-                {type.value === 'improvement' &&
-                  'Ideas to make existing features better'}
-                {type.value === 'general' &&
-                  'Share your overall experience and thoughts'}
+                {type.value === 'bug' && "Report issues or bugs you've encountered"}
+                {type.value === 'feature' && 'Suggest new features or functionality'}
+                {type.value === 'improvement' && 'Ideas to make existing features better'}
+                {type.value === 'general' && 'Share your overall experience and thoughts'}
               </p>
             </CardContent>
           </Card>
@@ -85,22 +122,32 @@ export function FeedbackPage() {
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Name (Optional)</Label>
-                <Input id="name" placeholder="Your name" />
+                <Input id="name" placeholder="Your name" {...form.register('name')} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email (Optional)</Label>
-                <Input id="email" type="email" placeholder="your@email.com" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  {...form.register('email')}
+                />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="type">Feedback Type</Label>
-              <Select>
-                <SelectTrigger>
+              <Select
+                value={form.watch('type')}
+                onValueChange={(value: z.infer<typeof feedbackSchema>['type']) =>
+                  form.setValue('type', value)
+                }
+              >
+                <SelectTrigger id="type" aria-label="Feedback type">
                   <SelectValue placeholder="Select feedback type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {feedbackTypes.map(type => (
+                  {feedbackTypes.map((type) => (
                     <SelectItem key={type.value} value={type.value}>
                       {type.label}
                     </SelectItem>
@@ -114,6 +161,7 @@ export function FeedbackPage() {
               <Input
                 id="title"
                 placeholder="Brief summary of your feedback"
+                {...form.register('title')}
               />
             </div>
 
@@ -121,6 +169,7 @@ export function FeedbackPage() {
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
+                {...form.register('description')}
                 placeholder="Provide detailed feedback, steps to reproduce (for bugs), or specific suggestions..."
                 className="min-h-[150px]"
               />
@@ -128,8 +177,13 @@ export function FeedbackPage() {
 
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
-              <Select>
-                <SelectTrigger>
+              <Select
+                value={form.watch('priority')}
+                onValueChange={(value: z.infer<typeof feedbackSchema>['priority']) =>
+                  form.setValue('priority', value)
+                }
+              >
+                <SelectTrigger id="priority" aria-label="Priority">
                   <SelectValue placeholder="Select priority level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -145,10 +199,26 @@ export function FeedbackPage() {
               <Button type="submit" className="flex-1">
                 Submit Feedback
               </Button>
-              <Button type="button" variant="outline">
+              <Button type="button" variant="outline" onClick={saveDraft}>
                 Save Draft
               </Button>
+              <Button type="button" variant="outline" onClick={restoreDraft}>
+                Restore Draft
+              </Button>
             </div>
+            {Object.keys(form.formState.errors).length > 0 && (
+              <p role="alert">Enter a title and description, and a valid email if provided.</p>
+            )}
+            {form.formState.isSubmitSuccessful && (
+              <output className="block">
+                Feedback preview accepted locally. No feedback was sent to a server.
+              </output>
+            )}
+            {draftSaved && (
+              <output className="block">
+                Draft saved in this browser tab for this session only.
+              </output>
+            )}
           </form>
         </CardContent>
       </Card>
@@ -164,8 +234,7 @@ export function FeedbackPage() {
               <div className="flex-1">
                 <p className="font-medium">Add dark mode toggle to navbar</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  It would be great to have a quick way to switch between
-                  light and dark modes.
+                  It would be great to have a quick way to switch between light and dark modes.
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Feature Request - 2 days ago - Implemented
@@ -176,12 +245,9 @@ export function FeedbackPage() {
             <div className="flex items-start gap-x-3 rounded-lg bg-muted/50 p-4">
               <Bug className="mt-0.5 size-5 text-red-500" />
               <div className="flex-1">
-                <p className="font-medium">
-                  Form validation not working on mobile
-                </p>
+                <p className="font-medium">Form validation not working on mobile</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  The form validation messages don&apos;t appear properly on mobile
-                  devices.
+                  The form validation messages don&apos;t appear properly on mobile devices.
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Bug Report - 1 week ago - In Progress
@@ -194,8 +260,7 @@ export function FeedbackPage() {
               <div className="flex-1">
                 <p className="font-medium">Improve loading states</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Add skeleton loaders and better loading indicators
-                  throughout the app.
+                  Add skeleton loaders and better loading indicators throughout the app.
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Improvement - 1 week ago - Planned

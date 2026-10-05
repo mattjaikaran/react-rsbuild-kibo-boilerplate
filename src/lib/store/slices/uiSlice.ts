@@ -29,8 +29,7 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
     root.classList.remove('light', 'dark')
 
     if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light'
       root.classList.add(systemTheme)
@@ -41,8 +40,10 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
 
   toggleTheme: () => {
     const { theme, setTheme } = get()
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
+    const isDark =
+      theme === 'dark' ||
+      (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    setTheme(isDark ? 'light' : 'dark')
   },
 
   setSidebarOpen: (sidebarOpen: boolean) => {
@@ -54,7 +55,7 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
     set({ sidebarOpen: !sidebarOpen })
   },
 
-  addNotification: notificationData => {
+  addNotification: (notificationData) => {
     const { notifications } = get()
     const notification: AppNotification = {
       ...notificationData,
@@ -77,7 +78,7 @@ export const createUISlice: StateCreator<UISlice> = (set, get) => ({
   removeNotification: (id: string) => {
     const { notifications } = get()
     set({
-      notifications: notifications.filter(n => n.id !== id),
+      notifications: notifications.filter((n) => n.id !== id),
     })
   },
 

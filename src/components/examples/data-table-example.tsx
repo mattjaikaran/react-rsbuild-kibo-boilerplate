@@ -32,9 +32,9 @@ const data: Task[] = [
 ]
 
 const statusColors: Record<string, string> = {
-  'todo': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  todo: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   'in-progress': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  'done': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  done: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
 }
 
 const priorityColors: Record<string, string> = {
@@ -47,10 +47,7 @@ const columns: ColumnDef<Task>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
         Title
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
@@ -92,7 +89,6 @@ export function DataTableExample() {
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
 
-  // eslint-disable-next-line react-hooks/incompatible-library -- Reviewed mutable TanStack API; this component remains uncompiled.
   const table = useReactTable({
     data,
     columns,
@@ -120,16 +116,10 @@ export function DataTableExample() {
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="border-b bg-muted/50">
                 {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="px-4 py-3 text-left text-sm font-medium"
-                  >
+                  <th key={header.id} className="px-4 py-3 text-left text-sm font-medium">
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
               </tr>

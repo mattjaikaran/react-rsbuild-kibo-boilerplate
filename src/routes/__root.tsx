@@ -6,6 +6,8 @@ interface RouterContext {
   queryClient: QueryClient
 }
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: MainLayout,
 })

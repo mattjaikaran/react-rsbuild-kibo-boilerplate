@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 export const useLocalStorage = <T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((prev: T) => T)) => void, () => void] => {
   const readValue = useCallback((): T => {
     if (typeof window === 'undefined') {
@@ -23,8 +23,7 @@ export const useLocalStorage = <T>(
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
       try {
-        const valueToStore =
-          value instanceof Function ? value(storedValue) : value
+        const valueToStore = value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
 
         if (typeof window !== 'undefined') {
@@ -33,14 +32,14 @@ export const useLocalStorage = <T>(
             new StorageEvent('storage', {
               key,
               newValue: JSON.stringify(valueToStore),
-            })
+            }),
           )
         }
       } catch (error) {
         console.warn(`Error setting localStorage key "${key}":`, error)
       }
     },
-    [key, storedValue]
+    [key, storedValue],
   )
 
   const removeValue = useCallback(() => {
@@ -74,7 +73,7 @@ export const useLocalStorage = <T>(
 
 export const useSessionStorage = <T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((prev: T) => T)) => void, () => void] => {
   const readValue = useCallback((): T => {
     if (typeof window === 'undefined') {
@@ -95,8 +94,7 @@ export const useSessionStorage = <T>(
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
       try {
-        const valueToStore =
-          value instanceof Function ? value(storedValue) : value
+        const valueToStore = value instanceof Function ? value(storedValue) : value
         setStoredValue(valueToStore)
 
         if (typeof window !== 'undefined') {
@@ -106,7 +104,7 @@ export const useSessionStorage = <T>(
         console.warn(`Error setting sessionStorage key "${key}":`, error)
       }
     },
-    [key, storedValue]
+    [key, storedValue],
   )
 
   const removeValue = useCallback(() => {

@@ -55,19 +55,22 @@ Available components: kanban, calendar, gantt, editor, table, list, avatar-stack
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `bun run dev` | Start dev server on port 3000 |
-| `bun run build` | Production build |
-| `bun run preview` | Preview production build |
-| `bun run lint` | Run ESLint |
-| `bun run lint:fix` | Run ESLint with auto-fix |
-| `bun run format` | Format code with Prettier |
-| `bun run typecheck` | TypeScript type checking |
-| `bun run test` | Run tests |
-| `bun run test:watch` | Run tests in watch mode |
-| `bun run test:coverage` | Tests with coverage report |
-| `bun run check` | Run typecheck + lint + test |
+| Command                 | Description                              |
+| ----------------------- | ---------------------------------------- |
+| `bun run dev`           | Start dev server on port 3000            |
+| `bun run build`         | Production build                         |
+| `bun run preview`       | Preview production build                 |
+| `bun run lint`          | Run Oxlint                               |
+| `bun run lint:strict`   | Run Oxlint with warnings denied          |
+| `bun run lint:fix`      | Apply Oxlint fixes                       |
+| `bun run format`        | Format the repository with Oxfmt         |
+| `bun run format:check`  | Check formatting with Oxfmt              |
+| `bun run doctor`        | Run pinned React Doctor, blocking errors |
+| `bun run typecheck`     | TypeScript type checking                 |
+| `bun run test`          | Run tests                                |
+| `bun run test:watch`    | Run tests in watch mode                  |
+| `bun run test:coverage` | Tests with coverage report               |
+| `bun run check`         | Run typecheck + lint + test              |
 
 ## Project Structure
 
@@ -114,11 +117,21 @@ Passwordless requests use `/auth/passwordless/login/request` and
 The real auth store does not use `src/mock-api`. Example dashboard task data
 remain demonstration data; do not treat them as an authenticated task API.
 
-The table example keeps React Compiler disabled with `use no memo`.
-Its one `react-hooks/incompatible-library` call-site waiver covers TanStack
-Table's mutable API. Keep sorting, filtering, visibility, and pagination
-inside that uncompiled component; do not pass its callbacks to compiled
-components. All other lint rules remain active.
+The table example keeps React Compiler disabled with `use no memo` because
+TanStack Table exposes a mutable API. Keep sorting, filtering, visibility, and
+pagination inside that uncompiled component.
+
+## Make it your own
+
+The landing page is an editable product workspace composition, not a finished
+product. Start with [DESIGN.md](./DESIGN.md) for the token map, layout rules,
+and accessibility guidelines. All Kibo examples and application routes remain
+available. Oxlint and Oxfmt use repository-root configurations; generated
+route trees, coverage, and build output are excluded.
+Install the recommended Oxc VS Code extension to use the checked-in formatter
+and explicit fix-on-save integration. Use a supported Node runtime for React
+Doctor (see [DEPENDENCIES.md](./DEPENDENCIES.md)); the CLI's IPC worker cannot
+run with forced Bun execution.
 
 ## Why Rsbuild + Kibo UI?
 

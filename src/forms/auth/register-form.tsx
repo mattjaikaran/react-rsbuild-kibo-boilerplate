@@ -24,21 +24,18 @@ const registerSchema = z
       .string()
       .min(1, 'Last name is required')
       .min(2, 'Last name must be at least 2 characters'),
-    email: z
-      .string()
-      .min(1, 'Email is required')
-      .email('Please enter a valid email address'),
+    email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
     password: z
       .string()
       .min(1, 'Password is required')
       .min(8, 'Password must be at least 8 characters')
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-        'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number',
       ),
     confirmPassword: z.string().min(1, 'Please confirm your password'),
   })
-  .refine(data => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })
@@ -51,11 +48,7 @@ interface RegisterFormProps {
   isLoading?: boolean
 }
 
-export function RegisterForm({
-  onSubmit,
-  onSwitchToLogin,
-  isLoading = false,
-}: RegisterFormProps) {
+export function RegisterForm({ onSubmit, onSwitchToLogin, isLoading = false }: RegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -78,9 +71,7 @@ export function RegisterForm({
     <Form {...form}>
       <div className="space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Create an account
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
           <p className="text-sm text-muted-foreground">
             Enter your information to create your account
           </p>
@@ -165,11 +156,7 @@ export function RegisterForm({
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? (
-                        <EyeOff className="size-4" />
-                      ) : (
-                        <Eye className="size-4" />
-                      )}
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       <span className="sr-only">
                         {showPassword ? 'Hide password' : 'Show password'}
                       </span>
@@ -200,9 +187,7 @@ export function RegisterForm({
                       variant="ghost"
                       size="icon"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="size-4" />
@@ -210,9 +195,7 @@ export function RegisterForm({
                         <Eye className="size-4" />
                       )}
                       <span className="sr-only">
-                        {showConfirmPassword
-                          ? 'Hide password'
-                          : 'Show password'}
+                        {showConfirmPassword ? 'Hide password' : 'Show password'}
                       </span>
                     </Button>
                   </div>
@@ -222,14 +205,8 @@ export function RegisterForm({
             )}
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            )}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
             Create Account
           </Button>
         </form>

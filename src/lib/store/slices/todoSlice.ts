@@ -1,11 +1,5 @@
 import { generateId } from '@/lib/utils'
-import type {
-  CreateTodoRequest,
-  Todo,
-  TodoFilters,
-  TodoState,
-  UpdateTodoRequest,
-} from '@/types'
+import type { CreateTodoRequest, Todo, TodoFilters, TodoState, UpdateTodoRequest } from '@/types'
 import type { StateCreator } from 'zustand'
 
 export interface TodoSlice extends TodoState {
@@ -75,12 +69,13 @@ const mockTodos: Todo[] = [
 
 export const createTodoSlice: StateCreator<TodoSlice> = (set, get) => ({
   ...initialState,
+  todos: mockTodos,
 
   fetchTodos: async () => {
     set({ isLoading: true, error: null })
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       set({
         todos: mockTodos,
@@ -99,7 +94,7 @@ export const createTodoSlice: StateCreator<TodoSlice> = (set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       const newTodo: Todo = {
         id: generateId(),
@@ -129,17 +124,17 @@ export const createTodoSlice: StateCreator<TodoSlice> = (set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       const { todos } = get()
-      const updatedTodos = todos.map(todo =>
+      const updatedTodos = todos.map((todo) =>
         todo.id === id
           ? {
               ...todo,
               ...updates,
               updatedAt: new Date().toISOString(),
             }
-          : todo
+          : todo,
       )
 
       set({
@@ -159,10 +154,10 @@ export const createTodoSlice: StateCreator<TodoSlice> = (set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await new Promise((resolve) => setTimeout(resolve, 300))
 
       const { todos } = get()
-      const filteredTodos = todos.filter(todo => todo.id !== id)
+      const filteredTodos = todos.filter((todo) => todo.id !== id)
 
       set({
         todos: filteredTodos,
@@ -179,7 +174,7 @@ export const createTodoSlice: StateCreator<TodoSlice> = (set, get) => ({
 
   toggleTodo: async (id: string) => {
     const { todos, updateTodo } = get()
-    const todo = todos.find(t => t.id === id)
+    const todo = todos.find((t) => t.id === id)
 
     if (todo) {
       await updateTodo(id, { completed: !todo.completed })

@@ -4,7 +4,7 @@ import type { User } from '@/types'
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query'
 
 export const useProfile = (
-  options?: Omit<UseQueryOptions<User, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<User, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   const { isAuthenticated } = useAuth()
 
@@ -19,7 +19,7 @@ export const useProfile = (
 }
 
 export const useSessionCheck = (
-  options?: Omit<UseQueryOptions<boolean, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<boolean, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   const { isAuthenticated } = useAuth()
 

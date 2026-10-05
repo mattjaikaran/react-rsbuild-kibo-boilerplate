@@ -15,16 +15,14 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query'
 
-export const useLogin = (
-  options?: UseMutationOptions<AuthResponse, Error, LoginCredentials>
-) => {
+export const useLogin = (options?: UseMutationOptions<AuthResponse, Error, LoginCredentials>) => {
   const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: authApi.login,
-    onSuccess: data => {
+    onSuccess: (data) => {
       setUser(data.user)
       setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -34,7 +32,7 @@ export const useLogin = (
         message: 'You have been successfully logged in.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Login failed',
@@ -46,7 +44,7 @@ export const useLogin = (
 }
 
 export const useRegister = (
-  options?: UseMutationOptions<AuthResponse, Error, RegisterCredentials>
+  options?: UseMutationOptions<AuthResponse, Error, RegisterCredentials>,
 ) => {
   const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
@@ -54,7 +52,7 @@ export const useRegister = (
 
   return useMutation({
     mutationFn: authApi.register,
-    onSuccess: data => {
+    onSuccess: (data) => {
       setUser(data.user)
       setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -64,7 +62,7 @@ export const useRegister = (
         message: 'Your account has been successfully created.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Registration failed',
@@ -76,7 +74,7 @@ export const useRegister = (
 }
 
 export const useMagicLink = (
-  options?: UseMutationOptions<{ message: string }, Error, MagicLinkRequest>
+  options?: UseMutationOptions<{ message: string }, Error, MagicLinkRequest>,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
@@ -91,7 +89,7 @@ export const useMagicLink = (
         message: 'Check your email for the login link.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to send magic link',

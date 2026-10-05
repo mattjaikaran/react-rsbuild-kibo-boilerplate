@@ -1,11 +1,6 @@
 import { todoQueryKeys, todosApi } from '@/api/todos'
 import { useUI } from '@/lib/store'
-import type {
-  CreateTodoRequest,
-  QueryParams,
-  Todo,
-  UpdateTodoRequest,
-} from '@/types'
+import type { CreateTodoRequest, QueryParams, Todo, UpdateTodoRequest } from '@/types'
 import {
   useMutation,
   type UseMutationOptions,
@@ -16,7 +11,7 @@ import {
 
 export const useTodos = (
   params?: QueryParams,
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: todoQueryKeys.list(params),
@@ -37,15 +32,13 @@ export const useTodo = (id: string, options?: UseQueryOptions<Todo, Error>) => {
   })
 }
 
-export const useCreateTodo = (
-  options?: UseMutationOptions<Todo, Error, CreateTodoRequest>
-) => {
+export const useCreateTodo = (options?: UseMutationOptions<Todo, Error, CreateTodoRequest>) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
   return useMutation({
     mutationFn: todosApi.createTodo,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
 
@@ -55,7 +48,7 @@ export const useCreateTodo = (
         message: `"${data.title}" has been created successfully.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to create todo',
@@ -67,18 +60,14 @@ export const useCreateTodo = (
 }
 
 export const useUpdateTodo = (
-  options?: UseMutationOptions<
-    Todo,
-    Error,
-    { id: string; updates: UpdateTodoRequest }
-  >
+  options?: UseMutationOptions<Todo, Error, { id: string; updates: UpdateTodoRequest }>,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
   return useMutation({
     mutationFn: ({ id, updates }) => todosApi.updateTodo(id, updates),
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(todoQueryKeys.detail(data.id), data)
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
@@ -89,7 +78,7 @@ export const useUpdateTodo = (
         message: `"${data.title}" has been updated successfully.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to update todo',
@@ -100,9 +89,7 @@ export const useUpdateTodo = (
   })
 }
 
-export const useDeleteTodo = (
-  options?: UseMutationOptions<{ message: string }, Error, string>
-) => {
+export const useDeleteTodo = (options?: UseMutationOptions<{ message: string }, Error, string>) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
@@ -119,7 +106,7 @@ export const useDeleteTodo = (
         message: 'Todo has been deleted successfully.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to delete todo',
@@ -130,14 +117,12 @@ export const useDeleteTodo = (
   })
 }
 
-export const useToggleTodo = (
-  options?: UseMutationOptions<Todo, Error, string>
-) => {
+export const useToggleTodo = (options?: UseMutationOptions<Todo, Error, string>) => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: todosApi.toggleTodo,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(todoQueryKeys.detail(data.id), data)
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
@@ -155,7 +140,7 @@ interface TodoStats {
 }
 
 export const useTodoStats = (
-  options?: Omit<UseQueryOptions<TodoStats, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<TodoStats, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<TodoStats, Error>({
     queryKey: todoQueryKeys.stats(),

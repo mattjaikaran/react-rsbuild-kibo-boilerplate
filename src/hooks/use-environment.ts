@@ -40,11 +40,7 @@ const getOnlineSnapshot = () => navigator.onLine
 const getOnlineServerSnapshot = () => true
 
 export function useNetworkStatus() {
-  return useSyncExternalStore(
-    subscribeToOnline,
-    getOnlineSnapshot,
-    getOnlineServerSnapshot
-  )
+  return useSyncExternalStore(subscribeToOnline, getOnlineSnapshot, getOnlineServerSnapshot)
 }
 
 const subscribeToResize = (callback: () => void) => {
@@ -62,10 +58,7 @@ const getViewportServerSnapshot = () => ({ width: 1024, height: 768 })
 let cachedViewport = { width: 0, height: 0 }
 const getMemoizedViewportSnapshot = () => {
   const current = getViewportSnapshot()
-  if (
-    current.width !== cachedViewport.width ||
-    current.height !== cachedViewport.height
-  ) {
+  if (current.width !== cachedViewport.width || current.height !== cachedViewport.height) {
     cachedViewport = current
   }
   return cachedViewport
@@ -75,6 +68,6 @@ export function useViewportSize() {
   return useSyncExternalStore(
     subscribeToResize,
     getMemoizedViewportSnapshot,
-    getViewportServerSnapshot
+    getViewportServerSnapshot,
   )
 }

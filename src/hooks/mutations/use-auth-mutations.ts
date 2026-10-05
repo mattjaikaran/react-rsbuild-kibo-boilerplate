@@ -7,17 +7,10 @@ import type {
   RegisterCredentials,
   User,
 } from '@/types'
-import {
-  useMutation,
-  type UseMutationOptions,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useMutation, type UseMutationOptions, useQueryClient } from '@tanstack/react-query'
 
 export const useLogin = (
-  options?: Omit<
-    UseMutationOptions<AuthResponse, Error, LoginCredentials>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<AuthResponse, Error, LoginCredentials>, 'mutationFn'>,
 ) => {
   const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
@@ -25,7 +18,7 @@ export const useLogin = (
 
   return useMutation<AuthResponse, Error, LoginCredentials>({
     mutationFn: authApi.login,
-    onSuccess: data => {
+    onSuccess: (data) => {
       setUser(data.user)
       setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -35,7 +28,7 @@ export const useLogin = (
         message: 'You have been successfully logged in.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Login failed',
@@ -47,10 +40,7 @@ export const useLogin = (
 }
 
 export const useRegister = (
-  options?: Omit<
-    UseMutationOptions<AuthResponse, Error, RegisterCredentials>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<AuthResponse, Error, RegisterCredentials>, 'mutationFn'>,
 ) => {
   const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
@@ -58,7 +48,7 @@ export const useRegister = (
 
   return useMutation<AuthResponse, Error, RegisterCredentials>({
     mutationFn: authApi.register,
-    onSuccess: data => {
+    onSuccess: (data) => {
       setUser(data.user)
       setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -68,7 +58,7 @@ export const useRegister = (
         message: 'Your account has been successfully created.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Registration failed',
@@ -80,10 +70,7 @@ export const useRegister = (
 }
 
 export const useMagicLink = (
-  options?: Omit<
-    UseMutationOptions<{ message: string }, Error, MagicLinkRequest>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<{ message: string }, Error, MagicLinkRequest>, 'mutationFn'>,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
@@ -98,7 +85,7 @@ export const useMagicLink = (
         message: 'Check your email for the login link.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to send magic link',
@@ -110,7 +97,7 @@ export const useMagicLink = (
 }
 
 export const useVerifyMagicLink = (
-  options?: Omit<UseMutationOptions<AuthResponse, Error, string>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<AuthResponse, Error, string>, 'mutationFn'>,
 ) => {
   const { setUser, setTokens } = useAuth()
   const { addNotification } = useUI()
@@ -118,7 +105,7 @@ export const useVerifyMagicLink = (
 
   return useMutation<AuthResponse, Error, string>({
     mutationFn: authApi.verifyMagicLink,
-    onSuccess: data => {
+    onSuccess: (data) => {
       setUser(data.user)
       setTokens(data.tokens)
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -128,7 +115,7 @@ export const useVerifyMagicLink = (
         message: 'Magic link verified successfully.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Verification failed',
@@ -140,10 +127,7 @@ export const useVerifyMagicLink = (
 }
 
 export const useLogout = (
-  options?: Omit<
-    UseMutationOptions<{ message: string }, Error, void>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<{ message: string }, Error, void>, 'mutationFn'>,
 ) => {
   const { logout } = useAuth()
   const { addNotification } = useUI()
@@ -172,14 +156,14 @@ export const useLogout = (
 }
 
 export const useUpdateProfile = (
-  options?: Omit<UseMutationOptions<User, Error, Partial<User>>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<User, Error, Partial<User>>, 'mutationFn'>,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
   return useMutation<User, Error, Partial<User>>({
     mutationFn: authApi.updateProfile,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(['auth', 'profile'], data)
       addNotification({
         type: 'success',
@@ -187,7 +171,7 @@ export const useUpdateProfile = (
         message: 'Your profile has been updated successfully.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Update failed',
@@ -206,16 +190,12 @@ export const useChangePassword = (
       { currentPassword: string; newPassword: string }
     >,
     'mutationFn'
-  >
+  >,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
-  return useMutation<
-    { message: string },
-    Error,
-    { currentPassword: string; newPassword: string }
-  >({
+  return useMutation<{ message: string }, Error, { currentPassword: string; newPassword: string }>({
     mutationFn: authApi.changePassword,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -225,7 +205,7 @@ export const useChangePassword = (
         message: 'Your password has been changed successfully.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Password change failed',
@@ -237,10 +217,7 @@ export const useChangePassword = (
 }
 
 export const useRequestPasswordReset = (
-  options?: Omit<
-    UseMutationOptions<{ message: string }, Error, string>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<{ message: string }, Error, string>, 'mutationFn'>,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
@@ -255,7 +232,7 @@ export const useRequestPasswordReset = (
         message: 'Check your email for password reset instructions.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Request failed',
@@ -268,22 +245,14 @@ export const useRequestPasswordReset = (
 
 export const useResetPassword = (
   options?: Omit<
-    UseMutationOptions<
-      { message: string },
-      Error,
-      { token: string; newPassword: string }
-    >,
+    UseMutationOptions<{ message: string }, Error, { token: string; newPassword: string }>,
     'mutationFn'
-  >
+  >,
 ) => {
   const { addNotification } = useUI()
   const queryClient = useQueryClient()
 
-  return useMutation<
-    { message: string },
-    Error,
-    { token: string; newPassword: string }
-  >({
+  return useMutation<{ message: string }, Error, { token: string; newPassword: string }>({
     mutationFn: authApi.resetPassword,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auth'] })
@@ -293,7 +262,7 @@ export const useResetPassword = (
         message: 'Your password has been reset. You can now log in.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Reset failed',

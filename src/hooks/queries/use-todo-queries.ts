@@ -17,10 +17,7 @@ interface TodoStats {
 
 export const useTodos = (
   params?: QueryParams,
-  options?: Omit<
-    UseQueryOptions<PaginatedResponse<Todo>, Error>,
-    'queryKey' | 'queryFn'
-  >
+  options?: Omit<UseQueryOptions<PaginatedResponse<Todo>, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<PaginatedResponse<Todo>, Error>({
     queryKey: todoQueryKeys.list(params),
@@ -39,10 +36,9 @@ export const useInfiniteTodos = (params?: Omit<QueryParams, 'page'>) => {
     number
   >({
     queryKey: [...todoQueryKeys.lists(), 'infinite', params],
-    queryFn: ({ pageParam }) =>
-      todosApi.getTodos({ ...params, page: pageParam }),
+    queryFn: ({ pageParam }) => todosApi.getTodos({ ...params, page: pageParam }),
     initialPageParam: 1,
-    getNextPageParam: lastPage => {
+    getNextPageParam: (lastPage) => {
       const { page, totalPages } = lastPage.pagination
       return page < totalPages ? page + 1 : undefined
     },
@@ -51,7 +47,7 @@ export const useInfiniteTodos = (params?: Omit<QueryParams, 'page'>) => {
 
 export const useTodo = (
   id: string,
-  options?: Omit<UseQueryOptions<Todo, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo, Error>({
     queryKey: todoQueryKeys.detail(id),
@@ -63,7 +59,7 @@ export const useTodo = (
 }
 
 export const useTodoStats = (
-  options?: Omit<UseQueryOptions<TodoStats, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<TodoStats, Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<TodoStats, Error>({
     queryKey: todoQueryKeys.stats(),
@@ -76,7 +72,7 @@ export const useTodoStats = (
 export const useTodosByPriority = (
   priority: 'low' | 'medium' | 'high',
   params?: Omit<QueryParams, 'filters'>,
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: todoQueryKeys.byPriority(priority),
@@ -88,7 +84,7 @@ export const useTodosByPriority = (
 export const useTodosByStatus = (
   completed: boolean,
   params?: Omit<QueryParams, 'filters'>,
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: todoQueryKeys.byStatus(completed),
@@ -98,7 +94,7 @@ export const useTodosByStatus = (
 }
 
 export const useOverdueTodos = (
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: ['todos', 'overdue'],
@@ -109,7 +105,7 @@ export const useOverdueTodos = (
 }
 
 export const useTodosDueToday = (
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: ['todos', 'due-today'],
@@ -121,7 +117,7 @@ export const useTodosDueToday = (
 export const useSearchTodos = (
   query: string,
   params?: QueryParams,
-  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<Todo[], Error>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<Todo[], Error>({
     queryKey: ['todos', 'search', query, params],

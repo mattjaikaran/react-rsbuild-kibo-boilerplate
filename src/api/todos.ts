@@ -60,14 +60,20 @@ export const todosApi = {
     return data
   },
 
-  getByPriority: async (priority: string, params?: Omit<QueryParams, 'filters'>): Promise<Todo[]> => {
+  getByPriority: async (
+    priority: string,
+    params?: Omit<QueryParams, 'filters'>,
+  ): Promise<Todo[]> => {
     const { data } = await apiClient.get('/todos', {
       params: { ...params, priority },
     })
     return data
   },
 
-  getByStatus: async (completed: boolean, params?: Omit<QueryParams, 'filters'>): Promise<Todo[]> => {
+  getByStatus: async (
+    completed: boolean,
+    params?: Omit<QueryParams, 'filters'>,
+  ): Promise<Todo[]> => {
     const { data } = await apiClient.get('/todos', {
       params: { ...params, completed },
     })

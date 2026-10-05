@@ -9,10 +9,7 @@ function Card({ className, ref, ...props }: CardProps) {
   return (
     <div
       ref={ref}
-      className={cn(
-        'rounded-lg border bg-card text-card-foreground shadow-sm',
-        className,
-      )}
+      className={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)}
       {...props}
     />
   )
@@ -24,13 +21,7 @@ interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function CardHeader({ className, ref, ...props }: CardHeaderProps) {
-  return (
-    <div
-      ref={ref}
-      className={cn('flex flex-col space-y-1.5 p-6', className)}
-      {...props}
-    />
-  )
+  return <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
 }
 CardHeader.displayName = 'CardHeader'
 
@@ -42,10 +33,7 @@ function CardTitle({ className, ref, ...props }: CardTitleProps) {
   return (
     <div
       ref={ref}
-      className={cn(
-        'text-2xl font-semibold leading-none tracking-tight',
-        className,
-      )}
+      className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
       {...props}
     />
   )
@@ -57,13 +45,7 @@ interface CardDescriptionProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function CardDescription({ className, ref, ...props }: CardDescriptionProps) {
-  return (
-    <div
-      ref={ref}
-      className={cn('text-sm text-muted-foreground', className)}
-      {...props}
-    />
-  )
+  return <div ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
 }
 CardDescription.displayName = 'CardDescription'
 
@@ -81,13 +63,7 @@ interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function CardFooter({ className, ref, ...props }: CardFooterProps) {
-  return (
-    <div
-      ref={ref}
-      className={cn('flex items-center p-6 pt-0', className)}
-      {...props}
-    />
-  )
+  return <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />
 }
 CardFooter.displayName = 'CardFooter'
 

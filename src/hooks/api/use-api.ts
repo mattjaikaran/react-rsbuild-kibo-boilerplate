@@ -12,7 +12,7 @@ import {
 
 export const useApiGet = <TData = unknown, TError = Error>(
   url: string,
-  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<TData, TError>({
     queryKey: [url],
@@ -27,7 +27,7 @@ export const useApiGet = <TData = unknown, TError = Error>(
 export const useApiQuery = <TData = unknown, TError = Error>(
   queryKey: readonly unknown[],
   url: string,
-  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
 ) => {
   return useQuery<TData, TError>({
     queryKey,
@@ -39,13 +39,9 @@ export const useApiQuery = <TData = unknown, TError = Error>(
   })
 }
 
-export const useApiPost = <
-  TData = unknown,
-  TError = Error,
-  TVariables = unknown,
->(
+export const useApiPost = <TData = unknown, TError = Error, TVariables = unknown>(
   url: string,
-  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
@@ -60,13 +56,9 @@ export const useApiPost = <
   })
 }
 
-export const useApiPut = <
-  TData = unknown,
-  TError = Error,
-  TVariables = unknown,
->(
+export const useApiPut = <TData = unknown, TError = Error, TVariables = unknown>(
   url: string,
-  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
@@ -81,13 +73,9 @@ export const useApiPut = <
   })
 }
 
-export const useApiPatch = <
-  TData = unknown,
-  TError = Error,
-  TVariables = unknown,
->(
+export const useApiPatch = <TData = unknown, TError = Error, TVariables = unknown>(
   url: string,
-  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<TData, TError, TVariables>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   return useMutation<TData, TError, TVariables>({
@@ -104,7 +92,7 @@ export const useApiPatch = <
 
 export const useApiDelete = <TData = unknown, TError = Error>(
   url: string,
-  options?: Omit<UseMutationOptions<TData, TError, void>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<TData, TError, void>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   return useMutation<TData, TError, void>({
@@ -121,7 +109,7 @@ export const useApiDelete = <TData = unknown, TError = Error>(
 
 export const useApiDeleteById = <TData = unknown, TError = Error>(
   baseUrl: string,
-  options?: Omit<UseMutationOptions<TData, TError, string>, 'mutationFn'>
+  options?: Omit<UseMutationOptions<TData, TError, string>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   return useMutation<TData, TError, string>({
@@ -138,7 +126,7 @@ export const useApiDeleteById = <TData = unknown, TError = Error>(
 
 export const useApiInfinite = <TData = unknown, TError = Error>(
   queryKey: readonly unknown[],
-  url: string
+  url: string,
 ) => {
   return useInfiniteQuery<
     PaginatedResponse<TData>,
@@ -149,16 +137,13 @@ export const useApiInfinite = <TData = unknown, TError = Error>(
   >({
     queryKey,
     queryFn: async ({ pageParam }) => {
-      const response = await apiClient.get<ApiResponse<PaginatedResponse<TData>>>(
-        url,
-        {
-          params: { page: pageParam },
-        }
-      )
+      const response = await apiClient.get<ApiResponse<PaginatedResponse<TData>>>(url, {
+        params: { page: pageParam },
+      })
       return response.data.data
     },
     initialPageParam: 1,
-    getNextPageParam: lastPage => {
+    getNextPageParam: (lastPage) => {
       const { page, totalPages } = lastPage.pagination
       return page < totalPages ? page + 1 : undefined
     },
@@ -169,10 +154,7 @@ export const usePrefetch = () => {
   const queryClient = useQueryClient()
 
   return {
-    prefetch: async <TData>(
-      queryKey: readonly unknown[],
-      queryFn: () => Promise<TData>
-    ) => {
+    prefetch: async <TData>(queryKey: readonly unknown[], queryFn: () => Promise<TData>) => {
       await queryClient.prefetchQuery({
         queryKey,
         queryFn,
@@ -194,12 +176,10 @@ export const useInvalidate = () => {
   const queryClient = useQueryClient()
 
   return {
-    invalidate: (queryKey: readonly unknown[]) =>
-      queryClient.invalidateQueries({ queryKey }),
+    invalidate: (queryKey: readonly unknown[]) => queryClient.invalidateQueries({ queryKey }),
     invalidateAll: () => queryClient.invalidateQueries(),
     invalidateExact: (queryKey: readonly unknown[]) =>
       queryClient.invalidateQueries({ queryKey, exact: true }),
-    remove: (queryKey: readonly unknown[]) =>
-      queryClient.removeQueries({ queryKey }),
+    remove: (queryKey: readonly unknown[]) => queryClient.removeQueries({ queryKey }),
   }
 }

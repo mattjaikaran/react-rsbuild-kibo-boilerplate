@@ -1,16 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/about')({
   component: AboutPage,
 })
 
-// react-doctor-disable-next-line react-doctor/only-export-components
 export function AboutPage() {
   const stack = [
     { name: 'React 19', description: 'UI library' },
@@ -37,9 +33,9 @@ export function AboutPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">About This Boilerplate</h1>
       <p className="text-muted-foreground">
-        A production-ready React starter powered by Rsbuild and Kibo UI,
-        combining Rust-based build tooling with advanced UI components for
-        dashboards, project management, and data-heavy applications.
+        A production-ready React starter powered by Rsbuild and Kibo UI, combining Rust-based build
+        tooling with advanced UI components for dashboards, project management, and data-heavy
+        applications.
       </p>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {stack.map((item) => (
@@ -48,9 +44,7 @@ export function AboutPage() {
               <CardTitle className="text-base">{item.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {item.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{item.description}</p>
             </CardContent>
           </Card>
         ))}

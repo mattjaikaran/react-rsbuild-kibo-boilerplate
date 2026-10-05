@@ -38,7 +38,7 @@ let refreshing: Promise<void> | null = null
 export const createAuthSlice: StateCreator<AuthSlice> = (set, get) => ({
   ...initialState,
 
-  login: async credentials => {
+  login: async (credentials) => {
     set({ isLoading: true, error: null })
     try {
       const response = await authApi.login(credentials)
@@ -53,7 +53,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set, get) => ({
     }
   },
 
-  register: async credentials => {
+  register: async (credentials) => {
     set({ isLoading: true, error: null })
     try {
       const response = await authApi.register(credentials)
@@ -67,7 +67,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set, get) => ({
     }
   },
 
-  magicLink: async request => {
+  magicLink: async (request) => {
     set({ isLoading: true, error: null })
     try {
       await authApi.magicLink(request)
@@ -107,21 +107,31 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set, get) => ({
         get().clearAuth()
         throw error
       }
-    })().finally(() => { refreshing = null })
+    })().finally(() => {
+      refreshing = null
+    })
     return refreshing
   },
 
-  setUser: user => { set({ user }) },
+  setUser: (user) => {
+    set({ user })
+  },
 
-  setTokens: tokens => {
+  setTokens: (tokens) => {
     localStorage.setItem(AUTH_STORAGE.accessToken, tokens.accessToken)
     localStorage.setItem(AUTH_STORAGE.refreshToken, tokens.refreshToken)
     set({ tokens, isAuthenticated: true })
   },
 
-  setLoading: isLoading => { set({ isLoading }) },
-  setError: error => { set({ error }) },
-  clearError: () => { set({ error: null }) },
+  setLoading: (isLoading) => {
+    set({ isLoading })
+  },
+  setError: (error) => {
+    set({ error })
+  },
+  clearError: () => {
+    set({ error: null })
+  },
 
   initializeAuth: async () => {
     const accessToken = localStorage.getItem(AUTH_STORAGE.accessToken)

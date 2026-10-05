@@ -16,10 +16,9 @@ export const useDebounce = <T>(value: T, delay: number = 500): T => {
   return debouncedValue
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useDebouncedCallback = <T extends (...args: any[]) => unknown>(
   callback: T,
-  delay: number = 500
+  delay: number = 500,
 ): ((...args: Parameters<T>) => void) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -33,7 +32,7 @@ export const useDebouncedCallback = <T extends (...args: any[]) => unknown>(
         callback(...args)
       }, delay)
     },
-    [callback, delay]
+    [callback, delay],
   )
 
   useEffect(() => {
@@ -53,13 +52,11 @@ interface DebounceWithLoadingState<T> {
   isDebouncing: boolean
 }
 
-type DebounceWithLoadingAction<T> =
-  | { type: 'start' }
-  | { type: 'done'; value: T }
+type DebounceWithLoadingAction<T> = { type: 'start' } | { type: 'done'; value: T }
 
 function debounceReducer<T>(
   state: DebounceWithLoadingState<T>,
-  action: DebounceWithLoadingAction<T>
+  action: DebounceWithLoadingAction<T>,
 ): DebounceWithLoadingState<T> {
   switch (action.type) {
     case 'start':
@@ -73,7 +70,7 @@ function debounceReducer<T>(
 
 export const useDebounceWithLoading = <T>(
   value: T,
-  delay: number = 500
+  delay: number = 500,
 ): { debouncedValue: T; isDebouncing: boolean } => {
   const [state, dispatch] = useReducer(debounceReducer<T>, {
     debouncedValue: value,

@@ -1,16 +1,17 @@
 {
   "name": "react-rsbuild-kibo-boilerplate",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "lint": "eslint . --max-warnings 0",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
+    "lint": "oxlint .",
+    "lint:strict": "oxlint . --deny-warnings",
+    "lint:fix": "oxlint . --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -23,7 +24,7 @@
     "check-dependencies": "bun run scripts/check_dependencies.ts",
     "gauntlet": "bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies",
     "prepare": "echo 'ready'",
-    "doctor": "./node_modules/.bin/react-doctor . --yes --json --no-telemetry --no-supply-chain --blocking error"
+    "doctor": "react-doctor . --yes --no-telemetry --no-supply-chain --blocking error"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
@@ -49,7 +50,6 @@
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
     "lucide-react": "1.14.0",
-    "next-themes": "0.4.6",
     "react": "19.2.5",
     "react-day-picker": "9.6.4",
     "react-dom": "19.2.5",
@@ -61,7 +61,6 @@
     "zustand": "5.0.13"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.4",
     "@rsbuild/core": "2.0.3",
     "@rsbuild/plugin-react": "2.0.0",
     "@tailwindcss/postcss": "4.2.4",
@@ -71,22 +70,20 @@
     "@testing-library/user-event": "14.6.1",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
-    "@typescript-eslint/eslint-plugin": "8.59.2",
-    "@typescript-eslint/parser": "8.59.2",
     "@vitest/coverage-v8": "4.1.5",
     "@vitest/ui": "4.1.5",
-    "eslint": "10.3.0",
-    "eslint-plugin-react-hooks": "7.1.1",
-    "eslint-plugin-react-refresh": "0.5.2",
-    "globals": "16.0.0",
     "jsdom": "29.1.1",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0",
     "postcss": "8.5.14",
-    "prettier": "3.8.3",
-    "prettier-plugin-tailwindcss": "0.8.0",
     "react-doctor": "0.9.14",
     "tailwindcss": "4.2.4",
     "tw-animate-css": "1.3.4",
     "typescript": "6.0.3",
     "vitest": "4.1.5"
+  },
+  "engines": {
+    "bun": ">=1.3.0",
+    "node": "^20.19.0 || >=22.13.0"
   }
 }

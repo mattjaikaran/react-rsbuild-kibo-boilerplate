@@ -1,6 +1,5 @@
 import { render, type RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ThemeProvider } from 'next-themes'
 import type { ReactElement } from 'react'
 
 function createTestQueryClient() {
@@ -14,19 +13,10 @@ function createTestQueryClient() {
 
 function AllProviders({ children }: { children: React.ReactNode }) {
   const queryClient = createTestQueryClient()
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="light">
-        {children}
-      </ThemeProvider>
-    </QueryClientProvider>
-  )
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 
-function customRender(
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) {
+function customRender(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
   return render(ui, { wrapper: AllProviders, ...options })
 }
 

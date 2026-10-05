@@ -17,7 +17,10 @@ export function isObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
-export function deepMerge<T extends Record<string, unknown>>(target: T, ...sources: Partial<T>[]): T {
+export function deepMerge<T extends Record<string, unknown>>(
+  target: T,
+  ...sources: Partial<T>[]
+): T {
   const result = deepClone(target)
 
   for (const source of sources) {

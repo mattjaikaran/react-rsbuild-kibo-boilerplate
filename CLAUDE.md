@@ -1,16 +1,20 @@
 # React Rsbuild + Kibo UI Boilerplate
 
 ## Commands
+
 ```bash
 bun run dev          # Dev server (port 3000)
 bun run build        # Production build
 bun run check        # typecheck + lint + test
 bun run test         # Vitest
-bun run lint:fix     # ESLint auto-fix
-bun run format       # Prettier
+bun run lint:fix     # Oxlint auto-fix
+bun run lint:strict  # Oxlint, warnings denied
+bun run format       # Oxfmt
+bun run doctor       # React Doctor, blocking errors
 ```
 
 ## Architecture
+
 - **Rsbuild** (not Vite) — `rsbuild.config.ts`, `@rsbuild/plugin-react`
 - **Kibo UI** — advanced components added via `bunx kibo-ui add <component>`
 - **shadcn/ui** — base primitives in `src/components/ui/`
@@ -26,6 +30,7 @@ bun run format       # Prettier
 - **Tests** — co-located `*.test.tsx`, utils at `src/test/utils.tsx`
 
 ## Directory Structure
+
 ```
 src/
 ├── api/              # API service functions (auth, todos)
@@ -33,7 +38,7 @@ src/
 │   ├── examples/     # Kibo UI examples (data-table, stats-cards)
 │   ├── layouts/      # MainLayout, AuthLayout, DashboardLayout
 │   ├── nav/          # Navbar, Footer
-│   ├── providers/    # QueryProvider, ThemeProvider wrappers
+│   ├── providers/    # QueryProvider and toast wrappers
 │   ├── shared/       # Hero, ThemeToggle
 │   └── ui/           # shadcn primitives (button, card, form, etc.)
 ├── config/           # Environment config
@@ -54,6 +59,7 @@ src/
 ```
 
 ## Kibo UI Components
+
 ```bash
 bunx kibo-ui add kanban      # Drag-and-drop task board
 bunx kibo-ui add calendar    # Full calendar with events
@@ -65,13 +71,17 @@ bunx kibo-ui add dropzone    # File upload drag-and-drop
 ```
 
 ## New Route
+
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/my-page')({ component: MyPage })
-function MyPage() { return <div>My Page</div> }
+function MyPage() {
+  return <div>My Page</div>
+}
 ```
 
 ## New API Service
+
 ```tsx
 import { apiClient } from '@/api/client'
 export async function getItems() {
@@ -81,6 +91,7 @@ export async function getItems() {
 ```
 
 ## New Query Hook
+
 ```tsx
 import { useQuery } from '@tanstack/react-query'
 import { getItems } from '@/api/items'
@@ -90,10 +101,14 @@ export function useItems() {
 ```
 
 ## New Store Slice
+
 ```tsx
 // src/lib/store/slices/mySlice.ts
 import type { StateCreator } from 'zustand'
-export interface MySlice { count: number; increment: () => void }
+export interface MySlice {
+  count: number
+  increment: () => void
+}
 export const createMySlice: StateCreator<MySlice> = (set) => ({
   count: 0,
   increment: () => set((s) => ({ count: s.count + 1 })),

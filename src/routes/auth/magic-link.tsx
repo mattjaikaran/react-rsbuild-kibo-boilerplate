@@ -1,23 +1,20 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { MagicLinkForm } from '@/forms/auth/magic-link-form'
 import { useStore } from '@/lib/store'
 import { useState } from 'react'
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/auth/magic-link')({
   component: MagicLinkPage,
 })
 
-// react-doctor-disable-next-line react-doctor/only-export-components
 export function MagicLinkPage() {
   const navigate = useNavigate()
-  const magicLink = useStore(state => state.magicLink)
-  const isLoading = useStore(state => state.isLoading)
-  const error = useStore(state => state.error)
+  const magicLink = useStore((state) => state.magicLink)
+  const isLoading = useStore((state) => state.isLoading)
+  const error = useStore((state) => state.error)
   const [sent, setSent] = useState(false)
 
   return (
@@ -26,11 +23,17 @@ export function MagicLinkPage() {
         <Card>
           <CardHeader className="space-y-1" />
           <CardContent>
-            {error && <p role="alert" className="text-destructive">{error}</p>}
-            {sent && <p role="status">If registered, you will receive a magic link.</p>}
+            {error && (
+              <p role="alert" className="text-destructive">
+                {error}
+              </p>
+            )}
+            {sent && (
+              <output className="block">If registered, you will receive a magic link.</output>
+            )}
             <MagicLinkForm
               isLoading={isLoading}
-              onSubmit={async data => {
+              onSubmit={async (data) => {
                 try {
                   await magicLink(data)
                   setSent(true)

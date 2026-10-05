@@ -16,9 +16,6 @@
       "src/mock-api/**",
       "src/types/**"
     ],
-    "rules": [
-      "deslop/unused-dependency",
-      "deslop/unused-dev-dependency"
-    ]
+    "rules": ["deslop/unused-dependency", "deslop/unused-dev-dependency"]
   }
 }

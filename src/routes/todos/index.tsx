@@ -10,79 +10,33 @@ import {
 } from '@/components/ui/select'
 import { CheckCircle2, Circle, Plus, Search, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { useStore } from '@/lib/store'
+import { TodoForm } from '@/forms/todos/todo-form'
+import type { Todo } from '@/types'
 
+// TanStack file-router registration requires Route; its plugin owns route HMR.
+// react-doctor-disable-next-line react-doctor/only-export-components
 export const Route = createFileRoute('/todos/')({
   component: TodosPage,
 })
 
-interface Todo {
-  id: string
-  title: string
-  description?: string
-  completed: boolean
-  priority: 'low' | 'medium' | 'high'
-  dueDate?: string
-  tags: string[]
-}
-
-const sampleTodos: Todo[] = [
-  {
-    id: '1',
-    title: 'Complete project setup',
-    description: 'Set up the React Rsbuild boilerplate with all necessary configurations',
-    completed: false,
-    priority: 'high',
-    dueDate: '2024-12-31',
-    tags: ['development', 'setup'],
-  },
-  {
-    id: '2',
-    title: 'Write documentation',
-    description: 'Create comprehensive documentation for the boilerplate',
-    completed: false,
-    priority: 'medium',
-    dueDate: '2024-12-25',
-    tags: ['documentation'],
-  },
-  {
-    id: '3',
-    title: 'Add unit tests',
-    description: 'Implement unit tests for all components and utilities',
-    completed: true,
-    priority: 'high',
-    tags: ['testing'],
-  },
-  {
-    id: '4',
-    title: 'Optimize performance',
-    description: 'Review and optimize application performance',
-    completed: false,
-    priority: 'medium',
-    tags: ['performance'],
-  },
-  {
-    id: '5',
-    title: 'Deploy to production',
-    description: 'Set up CI/CD pipeline and deploy',
-    completed: false,
-    priority: 'low',
-    dueDate: '2025-01-15',
-    tags: ['deployment', 'devops'],
-  },
-]
-
-// react-doctor-disable-next-line react-doctor/only-export-components
 export function TodosPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const todos = useStore((state) => state.todos)
+  const toggleTodo = useStore((state) => state.toggleTodo)
+  const deleteTodo = useStore((state) => state.deleteTodo)
+  const updateTodo = useStore((state) => state.updateTodo)
+  const isLoading = useStore((state) => state.isLoading)
+  const error = useStore((state) => state.error)
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
 
-  const filteredTodos = sampleTodos.filter(todo => {
+  const filteredTodos = todos.filter((todo) => {
     const matchesSearch =
       todo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       todo.description?.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesPriority =
-      priorityFilter === 'all' || todo.priority === priorityFilter
+    const matchesPriority = priorityFilter === 'all' || todo.priority === priorityFilter
     const matchesStatus =
       statusFilter === 'all' ||
       (statusFilter === 'completed' && todo.completed) ||
@@ -109,7 +63,7 @@ export function TodosPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Todos</h1>
           <p className="text-muted-foreground">
-            Manage your tasks and stay organized
+            Manage demo tasks for this visit. Changes are not saved to a server and reset on reload.
           </p>
         </div>
         <Link to="/todos/create">
@@ -119,6 +73,21 @@ export function TodosPage() {
           </Button>
         </Link>
       </div>
+      {error && <p role="alert">{error}</p>}
+      {editingTodo && (
+        <div className="rounded-lg border bg-card p-6">
+          <TodoForm
+            key={editingTodo.id}
+            defaultValues={editingTodo}
+            isLoading={isLoading}
+            onCancel={() => setEditingTodo(null)}
+            onSubmit={async (data) => {
+              await updateTodo(editingTodo.id, data)
+              if (!useStore.getState().error) setEditingTodo(null)
+            }}
+          />
+        </div>
+      )}
 
       <div className="rounded-lg border bg-card p-4">
         <div className="flex flex-col gap-4 sm:flex-row">
@@ -126,15 +95,16 @@ export function TodosPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 transform text-muted-foreground" />
               <Input
+                aria-label="Search todos"
                 placeholder="Search todos..."
                 value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
           </div>
           <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger aria-label="Filter by priority" className="w-[140px]">
               <SelectValue placeholder="Priority" />
             </SelectTrigger>
             <SelectContent>
@@ -145,7 +115,7 @@ export function TodosPage() {
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger aria-label="Filter by status" className="w-[120px]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -161,11 +131,11 @@ export function TodosPage() {
         {filteredTodos.length === 0 ? (
           <div className="rounded-lg border bg-card p-6 text-center">
             <p className="text-muted-foreground">
-              {sampleTodos.length === 0
+              {todos.length === 0
                 ? 'No todos yet. Create your first todo to get started!'
                 : 'No todos match your current filters.'}
             </p>
-            {sampleTodos.length === 0 && (
+            {todos.length === 0 && (
               <Link to="/todos/create" className="mt-4 inline-block">
                 <Button>
                   <Plus className="mr-2 size-4" />
@@ -175,10 +145,19 @@ export function TodosPage() {
             )}
           </div>
         ) : (
-          filteredTodos.map(todo => (
+          filteredTodos.map((todo) => (
             <div key={todo.id} className="rounded-lg border bg-card p-4">
               <div className="flex items-start gap-3">
-                <button type="button" className="mt-1">
+                <button
+                  type="button"
+                  className="mt-1"
+                  aria-label={`${todo.completed ? 'Mark pending' : 'Complete'}: ${todo.title}`}
+                  aria-pressed={todo.completed}
+                  disabled={isLoading}
+                  onClick={() => {
+                    void toggleTodo(todo.id)
+                  }}
+                >
                   {todo.completed ? (
                     <CheckCircle2 className="size-5 text-green-600" />
                   ) : (
@@ -210,17 +189,12 @@ export function TodosPage() {
 
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
                     {todo.dueDate && (
-                      <span>
-                        Due: {new Date(todo.dueDate).toLocaleDateString()}
-                      </span>
+                      <span>Due: {new Date(todo.dueDate).toLocaleDateString()}</span>
                     )}
                     {todo.tags.length > 0 && (
                       <div className="flex gap-1">
-                        {todo.tags.map(tag => (
-                          <span
-                            key={tag}
-                            className="rounded bg-secondary px-2 py-1"
-                          >
+                        {todo.tags.map((tag) => (
+                          <span key={tag} className="rounded bg-secondary px-2 py-1">
                             {tag}
                           </span>
                         ))}
@@ -230,12 +204,22 @@ export function TodosPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={isLoading}
+                    onClick={() => setEditingTodo(todo)}
+                  >
                     Edit
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
+                    aria-label={`Delete ${todo.title}`}
+                    disabled={isLoading}
+                    onClick={() => {
+                      void deleteTodo(todo.id)
+                    }}
                     className="text-destructive hover:text-destructive"
                   >
                     <Trash2 className="size-4" />

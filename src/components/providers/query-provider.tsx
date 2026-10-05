@@ -37,8 +37,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
               }
               return failureCount < 3
             },
-            retryDelay: (attemptIndex: number) =>
-              Math.min(1000 * 2 ** attemptIndex, 30000),
+            retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
           },
           mutations: {
             retry: (failureCount, error: unknown) => {
@@ -52,7 +51,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
             },
           },
         },
-      })
+      }),
   )
 
   return (

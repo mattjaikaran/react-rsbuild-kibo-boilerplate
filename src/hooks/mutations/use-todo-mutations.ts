@@ -1,24 +1,17 @@
 import { todoQueryKeys, todosApi } from '@/api/todos'
 import { useUI } from '@/lib/store'
 import type { CreateTodoRequest, Todo, UpdateTodoRequest } from '@/types'
-import {
-  useMutation,
-  type UseMutationOptions,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useMutation, type UseMutationOptions, useQueryClient } from '@tanstack/react-query'
 
 export const useCreateTodo = (
-  options?: Omit<
-    UseMutationOptions<Todo, Error, CreateTodoRequest>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<Todo, Error, CreateTodoRequest>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
   return useMutation<Todo, Error, CreateTodoRequest>({
     mutationFn: todosApi.createTodo,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
       addNotification({
@@ -27,7 +20,7 @@ export const useCreateTodo = (
         message: `"${data.title}" has been created successfully.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to create todo',
@@ -42,14 +35,14 @@ export const useUpdateTodo = (
   options?: Omit<
     UseMutationOptions<Todo, Error, { id: string; updates: UpdateTodoRequest }>,
     'mutationFn'
-  >
+  >,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
   return useMutation<Todo, Error, { id: string; updates: UpdateTodoRequest }>({
     mutationFn: ({ id, updates }) => todosApi.updateTodo(id, updates),
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(todoQueryKeys.detail(data.id), data)
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
@@ -59,7 +52,7 @@ export const useUpdateTodo = (
         message: `"${data.title}" has been updated successfully.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to update todo',
@@ -71,10 +64,7 @@ export const useUpdateTodo = (
 }
 
 export const useDeleteTodo = (
-  options?: Omit<
-    UseMutationOptions<{ message: string }, Error, string>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<{ message: string }, Error, string>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
@@ -91,7 +81,7 @@ export const useDeleteTodo = (
         message: 'Todo has been deleted successfully.',
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Failed to delete todo',
@@ -103,13 +93,16 @@ export const useDeleteTodo = (
 }
 
 export const useToggleTodo = (
-  options?: Omit<UseMutationOptions<Todo, Error, string, { previousTodo: Todo | undefined }>, 'mutationFn'>
+  options?: Omit<
+    UseMutationOptions<Todo, Error, string, { previousTodo: Todo | undefined }>,
+    'mutationFn'
+  >,
 ) => {
   const queryClient = useQueryClient()
 
   return useMutation<Todo, Error, string, { previousTodo: Todo | undefined }>({
     mutationFn: todosApi.toggleTodo,
-    onMutate: async id => {
+    onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: todoQueryKeys.detail(id) })
       const previousTodo = queryClient.getQueryData<Todo>(todoQueryKeys.detail(id))
 
@@ -127,7 +120,7 @@ export const useToggleTodo = (
         queryClient.setQueryData(todoQueryKeys.detail(id), context.previousTodo)
       }
     },
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.setQueryData(todoQueryKeys.detail(data.id), data)
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.stats() })
@@ -138,25 +131,17 @@ export const useToggleTodo = (
 
 export const useBulkUpdateTodos = (
   options?: Omit<
-    UseMutationOptions<
-      Todo[],
-      Error,
-      { ids: string[]; updates: UpdateTodoRequest }
-    >,
+    UseMutationOptions<Todo[], Error, { ids: string[]; updates: UpdateTodoRequest }>,
     'mutationFn'
-  >
+  >,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
-  return useMutation<
-    Todo[],
-    Error,
-    { ids: string[]; updates: UpdateTodoRequest }
-  >({
+  return useMutation<Todo[], Error, { ids: string[]; updates: UpdateTodoRequest }>({
     mutationFn: ({ ids, updates }) => todosApi.bulkUpdate(ids, updates),
     onSuccess: (data, { ids }) => {
-      data.forEach(todo => {
+      data.forEach((todo) => {
         queryClient.setQueryData(todoQueryKeys.detail(todo.id), todo)
       })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
@@ -167,7 +152,7 @@ export const useBulkUpdateTodos = (
         message: `${ids.length} todos have been updated.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Bulk update failed',
@@ -179,10 +164,7 @@ export const useBulkUpdateTodos = (
 }
 
 export const useBulkDeleteTodos = (
-  options?: Omit<
-    UseMutationOptions<{ deletedCount: number }, Error, string[]>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<{ deletedCount: number }, Error, string[]>, 'mutationFn'>,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
@@ -190,7 +172,7 @@ export const useBulkDeleteTodos = (
   return useMutation<{ deletedCount: number }, Error, string[]>({
     mutationFn: todosApi.bulkDelete,
     onSuccess: (data, ids) => {
-      ids.forEach(id => {
+      ids.forEach((id) => {
         queryClient.removeQueries({ queryKey: todoQueryKeys.detail(id) })
       })
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.lists() })
@@ -201,7 +183,7 @@ export const useBulkDeleteTodos = (
         message: `${data.deletedCount} todos have been deleted.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Bulk delete failed',
@@ -216,14 +198,14 @@ export const useArchiveCompletedTodos = (
   options?: Omit<
     UseMutationOptions<{ message: string; archivedCount: number }, Error, void>,
     'mutationFn'
-  >
+  >,
 ) => {
   const queryClient = useQueryClient()
   const { addNotification } = useUI()
 
   return useMutation<{ message: string; archivedCount: number }, Error, void>({
     mutationFn: todosApi.archiveCompleted,
-    onSuccess: data => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: todoQueryKeys.all })
       addNotification({
         type: 'success',
@@ -231,7 +213,7 @@ export const useArchiveCompletedTodos = (
         message: `${data.archivedCount} completed todos have been archived.`,
       })
     },
-    onError: error => {
+    onError: (error) => {
       addNotification({
         type: 'error',
         title: 'Archive failed',

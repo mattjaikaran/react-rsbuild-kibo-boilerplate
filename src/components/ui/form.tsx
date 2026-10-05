@@ -23,9 +23,7 @@ type FormFieldContextValue<
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
+const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -68,9 +66,7 @@ type FormItemContextValue = {
   id: string
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
+const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
 
 interface FormItemProps extends React.HTMLAttributes<HTMLDivElement> {
   ref?: React.Ref<HTMLDivElement>
@@ -111,18 +107,13 @@ interface FormControlProps extends React.ComponentPropsWithoutRef<typeof Slot> {
 }
 
 function FormControl({ ref, ...props }: FormControlProps) {
-  const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField()
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
     <Slot
       ref={ref}
       id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
+      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
       aria-invalid={!!error}
       {...props}
     />
@@ -173,12 +164,4 @@ function FormMessage({ className, children, ref, ...props }: FormMessageProps) {
 }
 FormMessage.displayName = 'FormMessage'
 
-export {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-}
+export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage }

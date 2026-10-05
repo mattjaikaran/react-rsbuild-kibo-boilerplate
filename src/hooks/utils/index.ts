@@ -1,8 +1,4 @@
-export {
-  useDebounce,
-  useDebouncedCallback,
-  useDebounceWithLoading,
-} from './use-debounce'
+export { useDebounce, useDebouncedCallback, useDebounceWithLoading } from './use-debounce'
 
 export { useLocalStorage, useSessionStorage } from './use-local-storage'
 

@@ -36,9 +36,7 @@ export function Hero({
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
               {title}
             </h1>
-            <p className="text-xl font-semibold text-primary sm:text-2xl">
-              {subtitle}
-            </p>
+            <p className="text-xl font-semibold text-primary sm:text-2xl">{subtitle}</p>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted-foreground">
               {description}
             </p>
@@ -53,11 +51,7 @@ export function Hero({
             </Button>
 
             <Button size="lg" variant="outline" className="group" asChild>
-              <a
-                href={secondaryAction.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={secondaryAction.href} target="_blank" rel="noopener noreferrer">
                 <Code2 className="mr-2 size-4" />
                 {secondaryAction.label}
               </a>
@@ -71,8 +65,7 @@ export function Hero({
               </div>
               <h3 className="text-lg font-semibold">Lightning Fast</h3>
               <p className="text-sm text-muted-foreground">
-                Built with Rsbuild for instant hot module replacement and
-                optimized builds
+                Built with Rsbuild for instant hot module replacement and optimized builds
               </p>
             </div>
 
@@ -82,8 +75,7 @@ export function Hero({
               </div>
               <h3 className="text-lg font-semibold">Type Safe</h3>
               <p className="text-sm text-muted-foreground">
-                Full TypeScript support with strict type checking and excellent
-                DX
+                Full TypeScript support with strict type checking and excellent DX
               </p>
             </div>
 
@@ -93,8 +85,7 @@ export function Hero({
               </div>
               <h3 className="text-lg font-semibold">Beautiful UI</h3>
               <p className="text-sm text-muted-foreground">
-                Styled with Tailwind CSS and shadcn/ui for a modern, accessible
-                design
+                Styled with Tailwind CSS and shadcn/ui for a modern, accessible design
               </p>
             </div>
           </div>

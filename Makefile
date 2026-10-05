@@ -1,4 +1,4 @@
-.PHONY: help dev build preview clean install lint format typecheck test check check-conventions check-dependencies gauntlet docker-build docker-up docker-down
+.PHONY: help dev build preview clean clean-dist install lint lint-strict lint-fix format format-check doctor typecheck test test-watch test-ui test-coverage check check-conventions check-dependencies gauntlet docker-build docker-up docker-down docker-logs component route hook
 
 help: ## show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -23,17 +23,23 @@ clean-dist: ## remove dist only
 	bun run clean:dist
 
 # Quality
-lint: ## run eslint
+lint: ## run oxlint
 	bun run lint
 
-lint-fix: ## run eslint with auto-fix
+lint-fix: ## run oxlint with auto-fix
 	bun run lint:fix
 
-format: ## format code with prettier
+format: ## format code with oxfmt
 	bun run format
 
 format-check: ## check formatting
 	bun run format:check
+
+lint-strict: ## run oxlint with warnings denied
+	bun run lint:strict
+
+doctor: ## run pinned react doctor, blocking errors
+	bun run doctor
 
 typecheck: ## run typescript type checking
 	bun run typecheck

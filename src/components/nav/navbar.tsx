@@ -22,14 +22,12 @@ export function Navbar({ className }: NavbarProps) {
         <div className="flex h-16 justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex flex-shrink-0 items-center">
-              <span className="text-xl font-bold text-primary">
-                React Rsbuild
-              </span>
+              <span className="text-xl font-bold text-primary">React Rsbuild</span>
             </Link>
           </div>
 
           <div className="hidden items-center gap-x-8 md:flex">
-            {navigation.map(item => (
+            {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
@@ -62,11 +60,7 @@ export function Navbar({ className }: NavbarProps) {
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? (
-                <X className="size-6" />
-              ) : (
-                <Menu className="size-6" />
-              )}
+              {isMobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
             </Button>
           </div>
         </div>
@@ -74,7 +68,7 @@ export function Navbar({ className }: NavbarProps) {
         {isMobileMenuOpen && (
           <div className="md:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              {navigation.map(item => (
+              {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
@@ -91,23 +85,13 @@ export function Navbar({ className }: NavbarProps) {
 
             <div className="border-t border-border pb-3 pt-4">
               <div className="space-y-1 px-2">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link
-                    to={'/auth/login' as string}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
+                <Button variant="ghost" className="w-full justify-start" asChild>
+                  <Link to={'/auth/login' as string} onClick={() => setIsMobileMenuOpen(false)}>
                     Sign In
                   </Link>
                 </Button>
                 <Button className="w-full" asChild>
-                  <Link
-                    to={'/auth/register' as string}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
+                  <Link to={'/auth/register' as string} onClick={() => setIsMobileMenuOpen(false)}>
                     Sign Up
                   </Link>
                 </Button>

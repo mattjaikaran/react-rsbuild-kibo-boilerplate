@@ -9,7 +9,7 @@ export const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-apiClient.interceptors.request.use(config => {
+apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem(AUTH_STORAGE.accessToken)
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
@@ -18,12 +18,17 @@ apiClient.interceptors.request.use(config => {
 type RetriedRequest = InternalAxiosRequestConfig & { authRetried?: boolean }
 
 apiClient.interceptors.response.use(
-  response => response,
+  (response) => response,
   async (error: AxiosError) => {
     const request = error.config as RetriedRequest | undefined
-    const publicAuth = request?.url?.startsWith('/token/') ||
-      ['/auth/login', '/auth/signup', '/auth/passwordless/login/request',
-        '/auth/passwordless/login/verify'].includes(request?.url ?? '')
+    const publicAuth =
+      request?.url?.startsWith('/token/') ||
+      [
+        '/auth/login',
+        '/auth/signup',
+        '/auth/passwordless/login/request',
+        '/auth/passwordless/login/verify',
+      ].includes(request?.url ?? '')
     if (error.response?.status !== 401 || !request || publicAuth) throw error
 
     if (!request.authRetried && localStorage.getItem(AUTH_STORAGE.refreshToken)) {
