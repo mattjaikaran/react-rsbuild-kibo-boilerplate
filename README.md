@@ -124,8 +124,9 @@ pagination inside that uncompiled component.
 ## Make it your own
 
 The landing page is an editable product workspace composition, not a finished
-product. Start with [DESIGN.md](./DESIGN.md) for the token map, layout rules,
-and accessibility guidelines. All Kibo examples and application routes remain
+product. [DESIGN.md](./DESIGN.md) is the authoritative repository-local guide
+for applying a new visual design, including the source edit map, brief, ordered
+workflow, and verification commands. All Kibo examples and application routes remain
 available. Oxlint and Oxfmt use repository-root configurations; generated
 route trees, coverage, and build output are excluded.
 Install the recommended Oxc VS Code extension to use the checked-in formatter

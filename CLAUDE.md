@@ -1,5 +1,11 @@
 # React Rsbuild + Kibo UI Boilerplate
 
+## Design authority
+
+[DESIGN.md](./DESIGN.md) is the definitive repository-local visual design guide.
+Update its design brief first, then follow its source map and applying-a-new-design
+workflow. Preserve the system-default appearance and shared two-way theme toggle.
+
 ## Commands
 
 ```bash

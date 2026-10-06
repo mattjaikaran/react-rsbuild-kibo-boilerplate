@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { useSetTheme, useTheme } from '@/lib/store'
+import { ThemeToggle } from '@/components/shared/theme-toggle'
 
 const notificationsSchema = z.object({
   emailNotifications: z.boolean(),
@@ -13,7 +13,6 @@ const notificationsSchema = z.object({
   taskReminders: z.boolean(),
 })
 const appearanceSchema = z.object({
-  theme: z.enum(['light', 'dark', 'system']),
   language: z.enum(['en', 'es', 'fr', 'de']),
 })
 
@@ -68,11 +67,9 @@ export function NotificationSettings() {
 }
 
 export function AppearanceSettings() {
-  const theme = useTheme()
-  const setTheme = useSetTheme()
   const form = useForm<z.infer<typeof appearanceSchema>>({
     resolver: zodResolver(appearanceSchema),
-    defaultValues: { theme, language: 'en' },
+    defaultValues: { language: 'en' },
   })
   return (
     <Card>
@@ -80,28 +77,22 @@ export function AppearanceSettings() {
         <CardTitle>Appearance</CardTitle>
         <CardDescription>Customize the theme on this device.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-medium">Theme</p>
+            <p className="text-sm text-muted-foreground">
+              Follows your device until you switch. Changes are saved immediately on this device.
+            </p>
+          </div>
+          <ThemeToggle />
+        </div>
         <form
           onSubmit={form.handleSubmit((values) => {
-            setTheme(values.theme)
             form.reset(values, { keepIsSubmitSuccessful: true })
           })}
           className="space-y-6"
         >
-          <fieldset>
-            <legend className="mb-4 font-medium">Theme</legend>
-            <div className="grid grid-cols-3 gap-4">
-              {(['light', 'dark', 'system'] as const).map((value) => (
-                <label
-                  key={value}
-                  className="flex items-center gap-2 rounded-lg border p-4 capitalize"
-                >
-                  <input type="radio" value={value} {...form.register('theme')} />
-                  {value}
-                </label>
-              ))}
-            </div>
-          </fieldset>
           <div className="space-y-2">
             <Label htmlFor="settings-language">Language preference</Label>
             <select
@@ -120,9 +111,7 @@ export function AppearanceSettings() {
           </div>
           <Button type="submit">Save Preferences</Button>
           {form.formState.isSubmitSuccessful && (
-            <output className="block">
-              Theme saved on this device. Language preference saved for this visit only.
-            </output>
+            <output className="block">Language preference saved for this visit only.</output>
           )}
         </form>
       </CardContent>
