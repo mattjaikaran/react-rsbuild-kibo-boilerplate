@@ -117,6 +117,21 @@ Passwordless requests use `/auth/passwordless/login/request` and
 The real auth store does not use `src/mock-api`. Example dashboard task data
 remain demonstration data; do not treat them as an authenticated task API.
 
+## Dev proxy
+
+The dev server proxies `/api`, `/admin`, `/static/admin`, and `/media` to
+`API_PROXY_TARGET` (default `http://localhost:8000`) so backend requests share
+the app's origin. Point it at the backend container when running in Docker:
+
+```bash
+API_PROXY_TARGET=http://api-dev:8000 bun run dev
+```
+
+Each route sets `changeOrigin: true`, so Django receives the target's host as
+the `Host` header (`api-dev:8000` in this example). Add that name to the
+backend's `ALLOWED_HOSTS`; otherwise Django answers `400 DisallowedHost`. The
+proxy belongs to the dev server only, not the static nginx production image.
+
 The table example keeps React Compiler disabled with `use no memo` because
 TanStack Table exposes a mutable API. Keep sorting, filtering, visibility, and
 pagination inside that uncompiled component.
