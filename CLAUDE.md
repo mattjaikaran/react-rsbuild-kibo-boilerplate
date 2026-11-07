@@ -29,7 +29,7 @@ bun run doctor       # React Doctor, blocking errors
 - **TanStack Table** — data tables
 - **Zustand** — client state in `src/lib/store/` with slices (auth, todo, ui, config)
 - **react-hook-form + zod** — forms in `src/forms/`
-- **Recharts** — charts, **dnd-kit** — drag-and-drop
+- **TanStack Charts** — charts, **dnd-kit** — drag-and-drop
 - **Path alias** — `@/` → `src/`, **Env vars** — `PUBLIC_` prefix (not VITE_), via `src/config/env.ts`
 - **API client** — `src/api/client.ts` (axios + JWT interceptors)
 - **Mock API** — `src/mock-api/index.ts` for development

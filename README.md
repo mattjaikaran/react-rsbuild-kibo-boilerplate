@@ -14,7 +14,7 @@ A production-ready React starter powered by [Rsbuild](https://rsbuild.rs) and [K
 - **TanStack Table** — Headless data table with sorting, filtering, pagination
 - **Zustand** — Client state management
 - **Tailwind CSS** — Utility-first styling with dark mode
-- **Recharts** — Composable chart library
+- **TanStack Charts** — Typed chart grammar with SVG rendering
 - **dnd-kit** — Drag and drop (for kanban boards)
 - **date-fns + React Day Picker** — Date utilities and date picker
 - **React Hook Form + Zod** — Form handling and validation
@@ -78,6 +78,7 @@ Available components: kanban, calendar, gantt, editor, table, list, avatar-stack
 src/
 ├── api/              # API client and service functions
 ├── components/
+│   ├── charts/       # TanStack Charts theme and example surface
 │   ├── examples/     # Example components (data table, stats cards)
 │   ├── layouts/      # Page layouts (MainLayout)
 │   ├── shared/       # Shared components (ThemeToggle)

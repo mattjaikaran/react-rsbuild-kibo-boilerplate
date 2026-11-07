@@ -19,7 +19,7 @@ export function AboutPage() {
     { name: 'TanStack Table', description: 'Headless data table with sorting/filtering' },
     { name: 'Zustand', description: 'Client state management' },
     { name: 'Tailwind CSS', description: 'Utility-first styling with dark mode' },
-    { name: 'Recharts', description: 'Composable chart library' },
+    { name: 'TanStack Charts', description: 'Typed chart grammar with SVG rendering' },
     { name: 'React Hook Form + Zod', description: 'Form handling and validation' },
     { name: 'dnd-kit', description: 'Drag and drop for kanban boards' },
     { name: 'date-fns', description: 'Date utility library' },
