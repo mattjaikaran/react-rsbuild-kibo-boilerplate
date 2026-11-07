@@ -23,6 +23,7 @@ listed here. Add a row when you add a dependency.
 | @rsbuild/core                 | 2.0.3    |
 | @rsbuild/plugin-react         | 2.0.0    |
 | @tailwindcss/postcss          | 4.2.4    |
+| @tanstack/charts              | 1.0.0    |
 | @tanstack/react-query         | 5.100.9  |
 | @tanstack/react-router        | 1.169.2  |
 | @tanstack/react-table         | 8.21.3   |
@@ -48,7 +49,6 @@ listed here. Add a row when you add a dependency.
 | react-doctor                  | 0.9.14   |
 | react-dom                     | 19.2.5   |
 | react-hook-form               | 7.75.0   |
-| recharts                      | 3.8.1    |
 | sonner                        | 2.0.3    |
 | tailwind-merge                | 3.2.0    |
 | tailwindcss                   | 4.2.4    |

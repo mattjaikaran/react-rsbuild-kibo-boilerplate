@@ -51,6 +51,11 @@
     --border: 40 15% 81%;
     --input: 40 15% 81%;
     --ring: 0 0% 10%;
+    --chart-1: 160 42% 30%;
+    --chart-2: 28 75% 42%;
+    --chart-3: 212 45% 42%;
+    --chart-4: 280 32% 45%;
+    --chart-5: 190 45% 35%;
     --radius: 0.75rem;
   }
 
@@ -75,6 +80,11 @@
     --border: 0 0% 24%;
     --input: 0 0% 24%;
     --ring: 0 0% 94%;
+    --chart-1: 157 40% 68%;
+    --chart-2: 34 78% 66%;
+    --chart-3: 212 55% 72%;
+    --chart-4: 280 40% 74%;
+    --chart-5: 190 48% 68%;
   }
 }
 
@@ -103,6 +113,21 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+@layer components {
+  .chart-surface {
+    --ts-chart-1: hsl(var(--chart-1));
+    --ts-chart-2: hsl(var(--chart-2));
+    --ts-chart-3: hsl(var(--chart-3));
+    --ts-chart-4: hsl(var(--chart-4));
+    --ts-chart-5: hsl(var(--chart-5));
+    --ts-chart-tooltip-background: hsl(var(--popover));
+    --ts-chart-tooltip-color: hsl(var(--popover-foreground));
+    --ts-chart-tooltip-border: 1px solid hsl(var(--border));
+    --ts-chart-tooltip-border-radius: var(--radius);
+    --ts-chart-tooltip-shadow: 0 12px 34px hsl(var(--foreground) / 0.12);
   }
 }
 

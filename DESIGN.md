@@ -12,8 +12,10 @@ Fill or revise these decisions for each redesign before implementation:
   sample content. Record the intended audience, visual references, and what to avoid.
 - **Colors:** warm-paper light surfaces remain the current light direction; dark
   pages are pure black with neutral elevated surfaces. Actions and focus are
-  monochrome; coral is reserved for destructive feedback. Record both palettes
-  and every semantic surface/foreground pair rather than isolated hex values.
+  monochrome; coral is reserved for destructive feedback. Chart series use the
+  `--chart-*` tokens, which stay legible in both appearances and never carry
+  status alone. Record both palettes and every semantic surface/foreground pair
+  rather than isolated hex values.
 - **Typography:** Inter when available, then Avenir Next and system sans; no remote
   font dependency. Record heading/body sizes, weights, line heights, and measure.
 - **Layout:** responsive reading order, restrained cards, no decorative gradients
@@ -24,8 +26,10 @@ Fill or revise these decisions for each redesign before implementation:
 
 ## Source edit map and ownership
 
-- `src/index.css`: `:root` and `.dark` semantic HSL tokens, Tailwind `@theme`
-  mappings, radius, body font, native `color-scheme`, focus and reduced motion.
+- `src/index.css`: `:root` and `.dark` semantic HSL tokens, `--chart-*` series
+  tokens and the `.chart-surface` TanStack Charts palette/tooltip mapping,
+  Tailwind `@theme` mappings, radius, body font, native `color-scheme`, focus and
+  reduced motion.
 - `src/components/ui/button.tsx`, `src/components/ui/card.tsx`, `src/components/ui/input.tsx`, `src/components/ui/textarea.tsx`,
   `src/components/ui/select.tsx`, `src/components/ui/form.tsx`, `src/components/ui/label.tsx`, `src/components/ui/table.tsx`, `src/components/ui/dropdown-menu.tsx`,
   `src/components/ui/skeleton.tsx`, and `src/components/ui/image.tsx`: existing copied shadcn/ui/Kibo primitives.
@@ -42,6 +46,9 @@ Fill or revise these decisions for each redesign before implementation:
   action, and explicitly labeled static workspace preview. `/todos` is the live demo.
 - `src/components/examples` and `src/routes/examples.tsx`: retained Kibo demos;
   adapt compositions without replacing the installed component architecture.
+- `src/components/charts/chart-theme.ts`: maps semantic chart tokens into the
+  TanStack Charts theme; `revenue-chart.tsx`: the example SVG surface rendered
+  on `/examples`. Keep definitions module-scoped and theme-driven.
 - `src/routes/dashboard` and `src/routes/todos`: application compositions.
 - `src/routes/settings/index.tsx` and `src/routes/settings/-components/settings-navigation.tsx`:
   settings tabs; `src/routes/settings/-components/preference-settings.tsx`: shared immediate theme
@@ -63,6 +70,7 @@ Fill or revise these decisions for each redesign before implementation:
    Keep dark `background` at `0 0% 0%`, dark surfaces neutral, and action/focus
    tokens monochrome. Do not hard-code light-only colors in compositions.
    Preserve `color-scheme: light` on root and `dark` on `.dark` for native controls.
+   Redefine the `--chart-*` series tokens for both appearances when the palette changes.
 3. Apply typography, radius, spacing and focus changes through existing shared
    primitives and shell before route-level compositions. Reuse Button variants
    and `asChild` for links; retain Radix semantics and copied-component ownership.

@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { RevenueChart } from '@/components/charts/revenue-chart'
 import { DataTableExample } from '@/components/examples/data-table-example'
 import { StatsCards } from '@/components/examples/stats-cards'
 
@@ -24,6 +25,18 @@ export function ExamplesPage() {
       </div>
 
       <StatsCards />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Revenue Chart</CardTitle>
+          <CardDescription>
+            TanStack Charts area and line marks using the shared chart theme
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <RevenueChart />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
