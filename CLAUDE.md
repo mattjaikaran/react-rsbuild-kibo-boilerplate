@@ -19,6 +19,18 @@ bun run format       # Oxfmt
 bun run doctor       # React Doctor, blocking errors
 ```
 
+## Workflow
+
+Read `CONTRIBUTING.md` before filing an issue or opening a PR. Issues are sized
+S/M/L and ordered in waves; a frontier model splits L work into S/M specs that a
+small model executes from `tasks/specs/S-*.md`. One batch PR per area and wave,
+at most 2,000 changed lines, closes every component issue.
+
+- `docs/architecture.md` — module boundaries, state ownership, dependency rule.
+- `docs/product/journeys.md` — user stories and their planned Playwright tests.
+- `docs/testing.md` — smoke and journey testing policy.
+- `tasks/specs/README.md` and `tasks/specs/TEMPLATE.md` — spec format.
+
 ## Architecture
 
 - **Rsbuild** (not Vite) — `rsbuild.config.ts`, `@rsbuild/plugin-react`
@@ -33,7 +45,7 @@ bun run doctor       # React Doctor, blocking errors
 - **Path alias** — `@/` → `src/`, **Env vars** — `PUBLIC_` prefix (not VITE_), via `src/config/env.ts`
 - **API client** — `src/api/client.ts` (axios + JWT interceptors)
 - **Mock API** — `src/mock-api/index.ts` for development
-- **Tests** — co-located `*.test.tsx`, utils at `src/test/utils.tsx`
+- **Tests** — existing Vitest tests stay; new coverage is Playwright smoke and journeys (no new unit tests); see `docs/testing.md`
 
 ## Directory Structure
 

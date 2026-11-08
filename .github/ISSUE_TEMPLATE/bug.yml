@@ -1,0 +1,62 @@
+name: Bug
+description: A reproducible defect with a size and a verification path
+title: 'fix: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [CONTRIBUTING.md](https://github.com/mattjaikaran/react-rsbuild-kibo-boilerplate/blob/main/CONTRIBUTING.md) before filing. A bug fix may
+        add one smoke test that reproduces the defect.
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened
+      description: The actual behavior, with the route and the steps.
+      placeholder: On /todos, pressing Delete...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen
+      placeholder: The row disappears and the list count drops by one.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include the browser, the appearance, and any account state.
+      placeholder: |
+        1. Open /todos
+        2. Add a todo
+        3. Press Delete
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      description: S is an exact fix, M spans several files, L needs planning.
+      options:
+        - S
+        - M
+        - L
+    validations:
+      required: true
+  - type: input
+    id: wave
+    attributes:
+      label: Wave
+      description: The milestone that orders this work, for example W2.
+      placeholder: W2
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Screenshots, console output, or the failing route. Do not paste secrets.
+    validations:
+      required: false

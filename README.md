@@ -19,7 +19,7 @@ A production-ready React starter powered by [Rsbuild](https://rsbuild.rs) and [K
 - **date-fns + React Day Picker** — Date utilities and date picker
 - **React Hook Form + Zod** — Form handling and validation
 - **Axios** — HTTP client with JWT interceptors
-- **Vitest** — Unit and component testing
+- **Vitest** — Existing component and utility checks (no new unit tests; see [docs/testing.md](./docs/testing.md))
 - **Sonner** — Toast notifications
 
 ## Quick Start
@@ -53,6 +53,19 @@ bunx shadcn add kanban --registry https://www.kibo-ui.com/registry
 
 Available components: kanban, calendar, gantt, editor, table, list, avatar-stack, code-block, color-picker, credit-card, dropzone, image-crop, marquee, qr-code, rating, spinner, stories, tags, ticker, tree, video-player, and [many more](https://www.kibo-ui.com/docs).
 
+## Workflow
+
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening an issue or a PR. Work
+is sized S/M/L and ordered in waves; an L issue is split into S and M specs
+before an agent claims it.
+
+- [docs/architecture.md](./docs/architecture.md) — module boundaries, state
+  ownership, and the dependency rule.
+- [docs/product/journeys.md](./docs/product/journeys.md) — user stories, their
+  routes, and their planned Playwright tests.
+- [tasks/specs/README.md](./tasks/specs/README.md) — the agent-run spec format.
+- [docs/testing.md](./docs/testing.md) — smoke and journey testing policy.
+
 ## Scripts
 
 | Command                 | Description                              |
@@ -75,6 +88,9 @@ Available components: kanban, calendar, gantt, editor, table, list, avatar-stack
 ## Project Structure
 
 ```
+docs/                 # Architecture, journeys, and testing policy
+tasks/specs/          # agent-run specs and their template
+.github/              # Issue and PR templates
 src/
 ├── api/              # API client and service functions
 ├── components/
