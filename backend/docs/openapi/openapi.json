@@ -1,0 +1,796 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "React Rsbuild Kibo Boilerplate API",
+    "version": "0.1.0",
+    "description": "Contract of the paired Django backend for this boilerplate. The generated client is built from this fixture so the app builds before a backend exists."
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "authLogin",
+        "summary": "Exchange email and password for JWT tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated user and tokens",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "operationId": "authSignup",
+        "summary": "Create an account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SignupRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created user",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/passwordless/login/request": {
+      "post": {
+        "operationId": "authRequestMagicLink",
+        "summary": "Send a passwordless login link",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MagicLinkRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dispatch acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DetailResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/passwordless/login/verify": {
+      "post": {
+        "operationId": "authVerifyMagicLink",
+        "summary": "Exchange a passwordless token for JWT tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MagicLinkVerifyRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated user and tokens",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MagicLinkVerifyResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "authLogout",
+        "summary": "Blacklist a refresh token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LogoutRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logout acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "authGetCurrentUser",
+        "summary": "Get the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Current user",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "authUpdateCurrentUser",
+        "summary": "Update the authenticated user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated user",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "operationId": "authChangePassword",
+        "summary": "Change the authenticated user's password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ChangePasswordRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password change acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/password-reset": {
+      "post": {
+        "operationId": "authRequestPasswordReset",
+        "summary": "Request a password reset email",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PasswordResetRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset request acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/password-reset/confirm": {
+      "post": {
+        "operationId": "authResetPassword",
+        "summary": "Confirm a password reset",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PasswordResetConfirmRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token/refresh": {
+      "post": {
+        "operationId": "authRefresh",
+        "summary": "Rotate an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RefreshRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New access token",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RefreshResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "get": {
+        "operationId": "todoList",
+        "summary": "List todos",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": { "$ref": "#/components/schemas/TodoPriority" }
+          },
+          {
+            "name": "completed",
+            "in": "query",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "overdue",
+            "in": "query",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "due_today",
+            "in": "query",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated todos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaginatedTodos" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "todoCreate",
+        "summary": "Create a todo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTodoRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/stats": {
+      "get": {
+        "operationId": "todoStats",
+        "summary": "Get todo counters",
+        "responses": {
+          "200": {
+            "description": "Todo statistics",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TodoStats" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/bulk": {
+      "patch": {
+        "operationId": "todoBulkUpdate",
+        "summary": "Update several todos",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BulkUpdateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated todos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Todo" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/bulk-delete": {
+      "post": {
+        "operationId": "todoBulkDelete",
+        "summary": "Delete several todos",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BulkDeleteRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete count",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BulkDeleteResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/archive-completed": {
+      "post": {
+        "operationId": "todoArchiveCompleted",
+        "summary": "Archive completed todos",
+        "responses": {
+          "200": {
+            "description": "Archive acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ArchiveResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/{todoId}": {
+      "parameters": [
+        {
+          "name": "todoId",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        }
+      ],
+      "get": {
+        "operationId": "todoGet",
+        "summary": "Get a todo",
+        "responses": {
+          "200": {
+            "description": "Todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "todoUpdate",
+        "summary": "Update a todo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateTodoRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "todoDelete",
+        "summary": "Delete a todo",
+        "responses": {
+          "200": {
+            "description": "Delete acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/{todoId}/toggle": {
+      "parameters": [
+        {
+          "name": "todoId",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        }
+      ],
+      "post": {
+        "operationId": "todoToggle",
+        "summary": "Toggle a todo's completed state",
+        "responses": {
+          "200": {
+            "description": "Toggled todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TodoPriority": {
+        "type": "string",
+        "enum": ["low", "medium", "high"]
+      },
+      "User": {
+        "type": "object",
+        "required": ["id", "email", "firstName", "lastName", "isActive"],
+        "properties": {
+          "id": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "lastLogin": { "type": "string" }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "lastLogin": { "type": "string" }
+        }
+      },
+      "Todo": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "completed",
+          "priority",
+          "tags",
+          "userId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "completed": { "type": "boolean" },
+          "priority": { "$ref": "#/components/schemas/TodoPriority" },
+          "dueDate": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "userId": { "type": "string" },
+          "createdAt": { "type": "string" },
+          "updatedAt": { "type": "string" }
+        }
+      },
+      "CreateTodoRequest": {
+        "type": "object",
+        "required": ["title", "priority"],
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "priority": { "$ref": "#/components/schemas/TodoPriority" },
+          "dueDate": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "UpdateTodoRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "completed": { "type": "boolean" },
+          "priority": { "$ref": "#/components/schemas/TodoPriority" },
+          "dueDate": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "BulkUpdateRequest": {
+        "type": "object",
+        "required": ["ids"],
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "completed": { "type": "boolean" },
+          "priority": { "$ref": "#/components/schemas/TodoPriority" },
+          "dueDate": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "BulkDeleteRequest": {
+        "type": "object",
+        "required": ["ids"],
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "TodoStats": {
+        "type": "object",
+        "required": ["total", "completed", "pending", "overdue", "byPriority"],
+        "properties": {
+          "total": { "type": "integer" },
+          "completed": { "type": "integer" },
+          "pending": { "type": "integer" },
+          "overdue": { "type": "integer" },
+          "byPriority": {
+            "type": "object",
+            "additionalProperties": { "type": "integer" }
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "required": ["page", "limit", "total", "totalPages"],
+        "properties": {
+          "page": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "total": { "type": "integer" },
+          "totalPages": { "type": "integer" }
+        }
+      },
+      "PaginatedTodos": {
+        "type": "object",
+        "required": ["data", "pagination"],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Todo" }
+          },
+          "pagination": { "$ref": "#/components/schemas/Pagination" }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "required": ["token", "refresh", "user"],
+        "properties": {
+          "token": { "type": "string" },
+          "refresh": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/User" }
+        }
+      },
+      "SignupRequest": {
+        "type": "object",
+        "required": ["email", "username", "password", "firstName", "lastName"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "username": { "type": "string" },
+          "password": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" }
+        }
+      },
+      "MagicLinkRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": { "type": "string", "format": "email" }
+        }
+      },
+      "MagicLinkVerifyRequest": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": { "type": "string" }
+        }
+      },
+      "MagicLinkVerifyResponse": {
+        "type": "object",
+        "required": ["access", "refresh", "user"],
+        "properties": {
+          "access": { "type": "string" },
+          "refresh": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/User" }
+        }
+      },
+      "LogoutRequest": {
+        "type": "object",
+        "required": ["refresh"],
+        "properties": {
+          "refresh": { "type": ["string", "null"] }
+        }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "required": ["currentPassword", "newPassword"],
+        "properties": {
+          "currentPassword": { "type": "string" },
+          "newPassword": { "type": "string" }
+        }
+      },
+      "PasswordResetRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": { "type": "string", "format": "email" }
+        }
+      },
+      "PasswordResetConfirmRequest": {
+        "type": "object",
+        "required": ["token", "newPassword"],
+        "properties": {
+          "token": { "type": "string" },
+          "newPassword": { "type": "string" }
+        }
+      },
+      "RefreshRequest": {
+        "type": "object",
+        "required": ["refresh"],
+        "properties": {
+          "refresh": { "type": "string" }
+        }
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "required": ["access"],
+        "properties": {
+          "access": { "type": "string" },
+          "refresh": { "type": "string" }
+        }
+      },
+      "MessageResponse": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": { "type": "string" }
+        }
+      },
+      "DetailResponse": {
+        "type": "object",
+        "required": ["detail"],
+        "properties": {
+          "detail": { "type": "string" }
+        }
+      },
+      "BulkDeleteResponse": {
+        "type": "object",
+        "required": ["deletedCount"],
+        "properties": {
+          "deletedCount": { "type": "integer" }
+        }
+      },
+      "ArchiveResponse": {
+        "type": "object",
+        "required": ["message", "archivedCount"],
+        "properties": {
+          "message": { "type": "string" },
+          "archivedCount": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

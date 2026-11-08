@@ -1,4 +1,4 @@
-import { apiClient } from '@/api/client'
+import { apiClient } from '@/api/client-config'
 import type { ApiResponse, PaginatedResponse } from '@/types'
 import {
   type InfiniteData,

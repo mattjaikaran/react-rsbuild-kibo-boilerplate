@@ -19,6 +19,7 @@ A production-ready React starter powered by [Rsbuild](https://rsbuild.rs) and [K
 - **date-fns + React Day Picker** — Date utilities and date picker
 - **React Hook Form + Zod** — Form handling and validation
 - **Axios** — HTTP client with JWT interceptors
+- **Hey API** — Generated OpenAPI client, Zod schemas, and TanStack Query helpers
 - **Vitest** — Existing component and utility checks (no new unit tests; see [docs/testing.md](./docs/testing.md))
 - **Sonner** — Toast notifications
 
@@ -76,6 +77,8 @@ before an agent claims it.
 | `bun run lint`          | Run Oxlint                               |
 | `bun run lint:strict`   | Run Oxlint with warnings denied          |
 | `bun run lint:fix`      | Apply Oxlint fixes                       |
+| `bun run api:generate`  | Regenerate the OpenAPI client            |
+| `bun run api:check`     | Fail on generated client drift           |
 | `bun run format`        | Format the repository with Oxfmt         |
 | `bun run format:check`  | Check formatting with Oxfmt              |
 | `bun run doctor`        | Run pinned React Doctor, blocking errors |
@@ -92,7 +95,7 @@ docs/                 # Architecture, journeys, and testing policy
 tasks/specs/          # agent-run specs and their template
 .github/              # Issue and PR templates
 src/
-├── api/              # API client and service functions
+├── api/              # Generated OpenAPI client and app-facing services
 ├── components/
 │   ├── charts/       # TanStack Charts theme and example surface
 │   ├── examples/     # Example components (data table, stats cards)
@@ -112,6 +115,16 @@ src/
 Use the Django Ninja boilerplate API. Set `PUBLIC_API_URL` to its API prefix,
 for example `http://localhost:8000/api`. Run Rsbuild with
 `bun --bun run dev` or `bun --bun run build` to use your Bun runtime.
+
+The API client is generated from `backend/docs/openapi/openapi.json` into
+`src/api/generated` with `bun run api:generate`. Point `OPENAPI_SPEC` at a live
+backend contract (for example `../backend/docs/openapi/openapi.json`) in a
+mattstack monorepo; standalone, the vendored fixture keeps the app building
+before a backend exists. `bun run api:check` fails when the committed output
+drifts and runs in the gauntlet. The generated SDK uses the shared axios
+instance from `src/api/client-config.ts`, so the JWT interceptors still apply.
+Endpoint modules in `src/api/` map backend token names to the store and leave
+URLs and payloads to the generated operations.
 
 The login form calls `POST /auth/login` with `email` and `password`.
 The API returns `{ token, refresh, user }`; the client maps those tokens to
