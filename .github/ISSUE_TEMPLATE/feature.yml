@@ -1,0 +1,60 @@
+name: Feature
+description: A scoped change with a size, a wave, and an observable result
+title: 'feat: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [CONTRIBUTING.md](https://github.com/mattjaikaran/react-rsbuild-kibo-boilerplate/blob/main/CONTRIBUTING.md) before filing. A size L
+        issue is split into S and M specs before an agent claims it.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is wrong or missing today, and who hits it?
+      placeholder: The settings page has no way to...
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Observable outcome
+      description: What a user or reviewer can see when this is done.
+      placeholder: The settings page persists...
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size
+      description: S is an exact edit, M is a fixed design across files, L needs planning.
+      options:
+        - S
+        - M
+        - L
+    validations:
+      required: true
+  - type: input
+    id: wave
+    attributes:
+      label: Wave
+      description: The milestone that orders this work, for example W2.
+      placeholder: W2
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Boundaries
+      description: Routes, services, and docs this may change. Name what is out of scope.
+      placeholder: src/routes/settings/, src/lib/store/slices/uiSlice.ts
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Bullet points a reviewer can check, including the journey and its test.
+    validations:
+      required: true
