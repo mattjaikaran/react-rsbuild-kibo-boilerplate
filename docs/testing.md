@@ -34,6 +34,11 @@ journeys.
 The repository has no Playwright dependency or `e2e/` directory yet. The paths
 above are the contract for W5; do not create a test file without the harness.
 
+`.github/workflows/ci.yml` already defines the sharded Playwright job. It
+detects `playwright.config.ts` and skips its steps until the harness lands. W5
+adds the dependency, config, `e2e/` directory, and `test:e2e` script; the job
+then runs the shards against the built app.
+
 A change is verified today with the commands that exist:
 
 ```bash

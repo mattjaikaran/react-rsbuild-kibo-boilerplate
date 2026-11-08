@@ -118,3 +118,12 @@ Testing policy: [docs/testing.md](docs/testing.md) and
 
 Run the verification gates in [AGENTS.md](AGENTS.md#verify) before a PR. Add the
 Playwright smoke and journey commands once the harness lands.
+
+## CI
+
+`.github/workflows/ci.yml` runs the format, lint, typecheck, build, convention,
+and dependency gates as parallel jobs on every pull request, on demand, and
+weekly. The weekly run gives `agent-run merge` a `main` baseline. Jobs use the
+repository's self-hosted runner on LXC 107; a pull request from a fork runs on
+`ubuntu-latest` instead, because fork code must never execute on a self-hosted
+runner. The sharded Playwright job skips until the W5 harness lands.
