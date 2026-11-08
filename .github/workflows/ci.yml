@@ -1,0 +1,150 @@
+name: CI
+
+# Pushes to main do not run CI: run it by hand with
+# `gh workflow run CI`. Agent PRs still run it, because agent-run merges only
+# on green checks. The weekly run gives agent-run merge the main baseline it
+# compares PR failures against.
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 0'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# Every job runs in parallel on the repo runner on LXC 107
+# (ci-runner-react-rsbuild-kibo-boilerplate). This repo is public, so a fork
+# pull request must never execute on the self-hosted runner: its jobs fall
+# back to ubuntu-latest. The expression is the runs-on form of
+#   if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+# Keep "Require approval for all outside collaborators" on in Actions
+# settings as well.
+jobs:
+  oxlint:
+    name: Oxlint
+    runs-on: &ci-runner ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || fromJSON('["self-hosted", "Linux", "X64", "react-rsbuild-kibo-boilerplate"]') }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run lint:strict
+
+  oxfmt:
+    name: Oxfmt check
+    runs-on: *ci-runner
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run format:check
+
+  typecheck:
+    name: Typecheck
+    runs-on: *ci-runner
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+
+  build:
+    name: Build
+    runs-on: *ci-runner
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+
+  check-conventions:
+    name: Check conventions
+    runs-on: *ci-runner
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run check-conventions
+
+  check-dependencies:
+    name: Check dependencies
+    runs-on: *ci-runner
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run check-dependencies
+
+  playwright:
+    name: Playwright journeys (${{ matrix.shard }}/${{ strategy.job-total }})
+    runs-on: *ci-runner
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+
+      # The W5 testing batch adds playwright.config.ts, the e2e/ directory,
+      # and the test:e2e script together. Until then this job stays green
+      # without claiming a Playwright result.
+      - name: Detect the Playwright harness
+        id: harness
+        run: |
+          if [ -f playwright.config.ts ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No Playwright harness yet; skipping this shard."
+          fi
+
+      - uses: oven-sh/setup-bun@v2
+        if: steps.harness.outputs.present == 'true'
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        if: steps.harness.outputs.present == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Build the app under test
+        if: steps.harness.outputs.present == 'true'
+        run: bun run build
+
+      - name: Install Chromium
+        if: steps.harness.outputs.present == 'true'
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run the journey shard
+        if: steps.harness.outputs.present == 'true'
+        run: bun run test:e2e -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+      - uses: actions/upload-artifact@v4
+        if: failure() && steps.harness.outputs.present == 'true'
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: playwright-report/
+          if-no-files-found: ignore
