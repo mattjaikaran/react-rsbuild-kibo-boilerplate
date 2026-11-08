@@ -117,10 +117,10 @@ for example `http://localhost:8000/api`. Run Rsbuild with
 `bun --bun run dev` or `bun --bun run build` to use your Bun runtime.
 
 The API client is generated from `backend/docs/openapi/openapi.json` into
-`src/api/generated` with `bun run api:generate`. Point `OPENAPI_SPEC` at a live
-backend contract (for example `../backend/docs/openapi/openapi.json`) in a
-mattstack monorepo; standalone, the vendored fixture keeps the app building
-before a backend exists. `bun run api:check` fails when the committed output
+`src/api/generated` with `bun run api:generate`. In a mattstack monorepo, set
+`OPENAPI_SPEC=../backend/docs/openapi/openapi.json` to use the live backend
+contract; standalone, the vendored fixture keeps the app building before a
+backend exists. `bun run api:check` fails when the committed output
 drifts and runs in the gauntlet. The generated SDK uses the shared axios
 instance from `src/api/client-config.ts`, so the JWT interceptors still apply.
 Endpoint modules in `src/api/` map backend token names to the store and leave
