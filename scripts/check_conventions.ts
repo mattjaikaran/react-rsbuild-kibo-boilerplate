@@ -38,6 +38,9 @@ const EXCLUDE_DIRS = new Set([
   '.vscode',
   'src/optional',
   'src/components/ui',
+  // Generator-owned code is byte-checked by api:check and type-checked.
+  // These handwritten conventions cannot be fixed by editing generated output.
+  'src/api/generated',
 ])
 
 const SOURCE_EXTS = new Set(['.ts', '.tsx'])

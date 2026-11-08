@@ -19,10 +19,12 @@
     "test:coverage": "vitest run --coverage",
     "clean": "rm -rf dist node_modules .rsbuild",
     "clean:dist": "rm -rf dist .rsbuild",
+    "api:generate": "bun run scripts/api-generate.ts",
+    "api:check": "bun run scripts/api-check.ts",
     "check": "bun run typecheck && bun run lint && bun run test && bun run check-conventions && bun run check-dependencies",
     "check-conventions": "bun run scripts/check_conventions.ts",
     "check-dependencies": "bun run scripts/check_dependencies.ts",
-    "gauntlet": "bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies",
+    "gauntlet": "bun run api:check && bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies",
     "prepare": "echo 'ready'",
     "doctor": "react-doctor . --yes --no-telemetry --no-supply-chain --blocking error"
   },
@@ -61,6 +63,7 @@
     "zustand": "5.0.13"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "0.99.0",
     "@rsbuild/core": "2.0.3",
     "@rsbuild/plugin-react": "2.0.0",
     "@tailwindcss/postcss": "4.2.4",

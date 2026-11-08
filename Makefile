@@ -1,4 +1,4 @@
-.PHONY: help dev build preview clean clean-dist install lint lint-strict lint-fix format format-check doctor typecheck test test-watch test-ui test-coverage check check-conventions check-dependencies gauntlet docker-build docker-up docker-down docker-logs component route hook
+.PHONY: help dev build preview clean clean-dist install lint lint-strict lint-fix format format-check doctor typecheck test test-watch test-ui test-coverage api-generate api-check check check-conventions check-dependencies gauntlet docker-build docker-up docker-down docker-logs component route hook
 
 help: ## show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -55,6 +55,12 @@ test-ui: ## run tests with vitest ui
 
 test-coverage: ## run tests with coverage
 	bun run test:coverage
+
+api-generate: ## regenerate the OpenAPI client
+	bun run api:generate
+
+api-check: ## fail when generated API output drifts
+	bun run api:check
 
 check: ## run typecheck + lint + test + convention + dependency gates
 	bun run check
