@@ -1,0 +1,16 @@
+name: Agent docs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  agent-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - name: Check AGENTS.md exists and its links resolve
+        run: bun run scripts/check_agent_docs.ts

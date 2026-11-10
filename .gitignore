@@ -24,3 +24,6 @@ coverage/
 
 # misc
 *.tsbuildinfo
+
+# personal overrides
+*.local.*

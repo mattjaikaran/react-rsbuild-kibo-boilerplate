@@ -60,6 +60,7 @@ Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening an issue or a PR. Work
 is sized S/M/L and ordered in waves; an L issue is split into S and M specs
 before an agent claims it.
 
+- [AGENTS.md](./AGENTS.md) — agent instructions, gates, and commit rules.
 - [docs/architecture.md](./docs/architecture.md) — module boundaries, state
   ownership, and the dependency rule.
 - [docs/product/journeys.md](./docs/product/journeys.md) — user stories, their

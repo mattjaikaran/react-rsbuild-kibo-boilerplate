@@ -69,6 +69,7 @@ bun run typecheck
 bun run build
 bun run check-conventions
 bun run check-dependencies
+bun run check-agent-docs
 ```
 
 Add `bun run doctor` for component or configuration changes. Add the Playwright
