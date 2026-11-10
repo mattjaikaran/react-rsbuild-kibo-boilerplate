@@ -21,10 +21,11 @@
     "clean:dist": "rm -rf dist .rsbuild",
     "api:generate": "bun run scripts/api-generate.ts",
     "api:check": "bun run scripts/api-check.ts",
-    "check": "bun run typecheck && bun run lint && bun run test && bun run check-conventions && bun run check-dependencies",
+    "check": "bun run typecheck && bun run lint && bun run test && bun run check-conventions && bun run check-dependencies && bun run check-agent-docs",
     "check-conventions": "bun run scripts/check_conventions.ts",
     "check-dependencies": "bun run scripts/check_dependencies.ts",
-    "gauntlet": "bun run api:check && bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies",
+    "check-agent-docs": "bun run scripts/check_agent_docs.ts",
+    "gauntlet": "bun run api:check && bun run format:check && bun run lint && bun run typecheck && bun run test && bun run check-conventions && bun run check-dependencies && bun run check-agent-docs",
     "prepare": "echo 'ready'",
     "doctor": "react-doctor . --yes --no-telemetry --no-supply-chain --blocking error"
   },

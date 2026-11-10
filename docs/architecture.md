@@ -3,7 +3,8 @@
 This document records the module boundaries for the React application. Read it
 before adding a route, a data source, or a shared component, and update it when
 a boundary moves. Visual decisions live in [DESIGN.md](../DESIGN.md); the
-delivery workflow lives in [CONTRIBUTING.md](../CONTRIBUTING.md).
+delivery workflow lives in [CONTRIBUTING.md](../CONTRIBUTING.md) and the agent
+rules in [AGENTS.md](../AGENTS.md).
 
 ## Summary
 

@@ -43,6 +43,7 @@ bun run typecheck
 bun run build
 bun run check-conventions
 bun run check-dependencies
+bun run check-agent-docs
 bun run doctor
 ```
 

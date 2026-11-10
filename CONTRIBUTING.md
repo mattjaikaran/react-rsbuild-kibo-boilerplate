@@ -2,17 +2,12 @@
 
 ## Set up
 
-```bash
-bun install
-bun run dev
-```
-
-The dev server runs on port 3000 and proxies `/api` to
+Install and run the commands in [AGENTS.md](AGENTS.md#commands). The dev server
+runs on port 3000 and proxies `/api` to
 `API_PROXY_TARGET` (default `http://localhost:8000`). Copy `.env.example` to
 `.env.local` to change the client API URL and timeout. Set `API_PROXY_TARGET`
 in the shell when the proxy target changes, for example
-`API_PROXY_TARGET=http://api-dev:8000 bun run dev`. Use Node
-`^20.19.0 || >=22.13.0` and Bun 1.3 or newer.
+`API_PROXY_TARGET=http://api-dev:8000 bun run dev`.
 
 Read [docs/architecture.md](docs/architecture.md) before adding a route or
 moving a boundary. Read [DESIGN.md](DESIGN.md) before changing the UI.
@@ -27,12 +22,9 @@ Two tracks run at the same time:
   on `agent/<Spec ID>`. You review and merge them in the morning.
 
 1. Pick an issue. Each issue has a size label and a wave milestone.
-2. Read the spec in `tasks/specs/` when one exists. A READY spec is the
-   contract; do not redesign it in the executor session.
-3. Commit with `<type>(<scope>): <Capitalized imperative summary>`. Keep the
-   subject at 50 characters or fewer and wrap the body at 72. Every commit
-   names a GitHub issue in its body: `Closes #N` when it finishes the issue,
-   `Refs #N` otherwise. Make small commits, one per component or step.
+2. Read the spec in `tasks/specs/` when one exists. The executor rules are in
+   [AGENTS.md](AGENTS.md#spec-workflow-agent-run).
+3. Commit as [AGENTS.md](AGENTS.md#git-and-commits) describes.
 4. Humans branch from `main` as `feature/`, `fix/`, `refactor/`, or `chore/`
    and open a PR with the template. Agent-run branches as `agent/<Spec ID>`.
 
@@ -66,14 +58,9 @@ Two tracks run at the same time:
 | M    | Fixed design, several files                           | Overnight agent (small model)                                                   |
 | L    | Open design, new subsystem, or a cross-cutting change | Supervised session with a frontier model; it splits the work into S and M specs |
 
-A frontier model plans: it reads the issue, the source code, and
-[docs/architecture.md](docs/architecture.md), makes every design choice, and
-writes S and M specs that a small model (Haiku, DeepSeek Flash) can execute
-without a design decision. L issues stay supervised until they are split.
-
-Size is not file count. The spec limits do that: a component spec stays within
-8 files and 300 changed lines; a batch spec stays within 20 files and 2,000
-changed lines.
+Spec planning, limits, and the executor workflow are in
+[tasks/specs/README.md](tasks/specs/README.md) and
+[AGENTS.md](AGENTS.md#spec-workflow-agent-run). Size is not file count.
 
 ## Waves
 
@@ -94,32 +81,21 @@ Do not start a wave that depends on an unmerged earlier wave.
 ## Batch PRs
 
 Do not open a PR for each small issue. Group similar issues in the same area
-and wave into one batch PR:
-
-- One area per PR: routes/UI, data/auth, or tooling/docs.
-- 2,000 changed lines or fewer. The agent-run gate counts every file,
-  insertions plus deletions, lockfiles included.
-- One commit per issue, so a reviewer can read the batch issue by issue.
-- The PR closes every issue in the batch with `Closes #N`.
-- A single issue that exceeds 2,000 lines is L work. Split it before opening
-  the PR.
+and wave into one batch PR; the
+[spec rules](tasks/specs/README.md#rules) define the limits, the commit
+layout, and how the PR closes every component issue.
 
 ## Specs
 
-Agent-run claims specs in `tasks/specs/S-*.md` whose Status is `READY` and
-whose dependencies are merged. See [tasks/specs/README.md](tasks/specs/README.md)
-for the format and [tasks/specs/TEMPLATE.md](tasks/specs/TEMPLATE.md) for the
-template.
-
-Each spec links to its GitHub issue and lists every path it may change. The
-executor may not touch a path outside `Files owned`. agent-run writes
-`Closes #N` into the PR.
+The format, status values, and executor rules live in
+[tasks/specs/README.md](tasks/specs/README.md),
+[tasks/specs/TEMPLATE.md](tasks/specs/TEMPLATE.md), and
+[AGENTS.md](AGENTS.md#spec-workflow-agent-run).
 
 ## Review process
 
-1. CI must pass. The agent-run gate runs the static checks and the build for
-   every PR, plus the smoke tests and Playwright journeys that cover the
-   changed files once those exist.
+1. CI must pass: the gates in [AGENTS.md](AGENTS.md#verify), plus the smoke
+   and Playwright journeys that cover the change once the harness exists.
 2. `matt-reviewer` reviews every PR. Fix or answer each finding.
 3. `mattjaikaran` approves. A PR merges only with both approvals on its
    current head commit.
@@ -135,29 +111,10 @@ steps 1 to 3 for agent PRs.
 
 ## Tests
 
-Testing is minimal. The app keeps two kinds of tests only:
-
-- A Playwright smoke test: the built app boots and every journey entry route
-  renders.
-- Playwright journey tests: one per journey in
-  [docs/product/journeys.md](docs/product/journeys.md).
-
-Do not add unit tests. The existing Vitest tests stay as they are and are not
-extended. Details: [docs/testing.md](docs/testing.md).
+Testing policy: [docs/testing.md](docs/testing.md) and
+[AGENTS.md](AGENTS.md#testing-policy). Never publish a result you did not run.
 
 ## Local checks
 
-Run these before a PR. They are the gates that exist today:
-
-```bash
-bun run format:check
-bun run lint:strict
-bun run typecheck
-bun run build
-bun run check-conventions
-bun run check-dependencies
-bun run doctor
-```
-
-`bun run test` runs the existing Vitest tests; it is not a license to add more.
-Once the Playwright harness lands, run its smoke and journey tests as well.
+Run the verification gates in [AGENTS.md](AGENTS.md#verify) before a PR. Add the
+Playwright smoke and journey commands once the harness lands.
