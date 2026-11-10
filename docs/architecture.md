@@ -23,7 +23,7 @@ flowchart LR
     hooks --> api[src/api services]
     hooks --> store[Zustand store]
     composition --> store
-    api --> client[src/api/client.ts]
+    api --> client[src/api/client-config.ts]
     client --> backend[Django Ninja API]
     client -. 401 refresh and clear .-> store
     store --> api
@@ -36,7 +36,7 @@ flowchart LR
 | 1   | File-based TanStack Router                                | `src/routes/`                                | URLs, loaders, and route components stay in one place. The router plugin generates `src/routeTree.gen.ts`; never hand-edit it.               |
 | 2   | TanStack Query owns server state                          | `src/hooks/queries/`, `src/hooks/mutations/` | Cache, retries, invalidation, and background refresh are one concern, not component state.                                                   |
 | 3   | Zustand owns cross-route client state                     | `src/lib/store/`                             | Auth session, appearance, notifications, and the demo todo list are shared by unrelated routes.                                              |
-| 4   | One Axios transport                                       | `src/api/client.ts`                          | Base URL, timeout, bearer token, refresh, and the login redirect live in one place. Routes and components never import Axios directly.       |
+| 4   | One Axios transport                                       | `src/api/client-config.ts`                   | Base URL, timeout, bearer token, refresh, and the login redirect live in one place. Routes and components never import Axios directly.       |
 | 5   | API service modules own the wire format                   | `src/api/`                                   | A service maps backend payloads (`token`, `refresh`) to the app's types (`accessToken`, `refreshToken`). Hooks and components see app types. |
 | 6   | Forms own validation                                      | `src/forms/`                                 | React Hook Form plus a Zod schema validates input next to the fields. A route does not duplicate field rules.                                |
 | 7   | Copied shadcn/ui and Kibo primitives stay upstream-shaped | `src/components/ui/`                         | Variants and composition extend them. Editing a primitive is reserved for a shared visual or accessibility requirement.                      |
@@ -60,8 +60,8 @@ flowchart LR
   for the data it renders, not for the whole store. `useAuth`, `useUI`, and
   `useAppConfig` exist so a consumer does not subscribe to every field.
 - **Dependency inversion.** Routes and components depend on hooks and service
-  functions, not on Axios. `src/api/client.ts` is the only transport import, so
-  a base URL, timeout, or refresh change lands in one place.
+  functions, not on Axios. `src/api/client-config.ts` is the only transport
+  import, so a base URL, timeout, or refresh change lands in one place.
 
 ## Dependency rule
 
@@ -72,15 +72,15 @@ Dependencies point inward and down this list:
 | Routes       | `src/routes/`                   | `components`, `forms`, `hooks`, `lib`, `types` | Call Axios, own a server cache, or hand-edit the generated tree |
 | Composition  | `src/components/`, `src/forms/` | `components/ui`, `lib`, `types`                | Import from `src/routes/` or fetch directly with `fetch`/Axios  |
 | Hooks        | `src/hooks/`                    | `api`, `lib/store`, `types`                    | Render UI or hold module-level mutable data                     |
-| API services | `src/api/`                      | `api/client`, `config`, `types`                | Import components, hooks, or route modules                      |
-| Transport    | `src/api/client.ts`             | `config`, `api/auth-storage`, `lib/store`      | Know about a route, a query, or a domain beyond auth refresh    |
+| API services | `src/api/`                      | `api/client-config`, `config`, `types`         | Import components, hooks, or route modules                      |
+| Transport    | `src/api/client-config.ts`      | `config`, `api/auth-storage`, `lib/store`      | Know about a route, a query, or a domain beyond auth refresh    |
 | Store        | `src/lib/store/`                | `api` service modules, `lib/helpers`, `types`  | Import routes, components, or hooks                             |
 | Primitives   | `src/components/ui/`            | `lib/utils`, UI dependencies                   | Import app state, hooks, or route code                          |
 
-There is one deliberate cycle: `src/api/client.ts` calls the auth store to
-refresh or clear the session on a 401, and the auth slice calls `authApi`. Keep
-it confined to auth. A second module that needs the store from transport is a
-design change, not a local import.
+There is one deliberate cycle: `src/api/client-config.ts` calls the auth store
+to refresh or clear the session on a 401, and the auth slice calls `authApi`.
+Keep it confined to auth. A second module that needs the store from transport
+is a design change, not a local import.
 
 ## Where logic goes
 
@@ -140,8 +140,8 @@ the API remains the authority.
 6. Login, registration, passwordless request, and passwordless verification are
    public auth paths and never trigger the refresh loop.
 
-Keep the public-path list in `src/api/client.ts` in sync with any new public
-endpoint.
+Keep the public-path list in `src/api/client-config.ts` in sync with any new
+public endpoint.
 
 ## Build and runtime
 

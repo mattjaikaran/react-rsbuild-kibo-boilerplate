@@ -23,7 +23,7 @@ browser state, and transport, not server code or business rules.
 ### Layout
 
 - `src/routes/` — file-based TanStack routes; `src/routeTree.gen.ts` is generated.
-- `src/api/` — generated OpenAPI client plus app services; `src/api/client.ts` is the only Axios import.
+- `src/api/` — generated OpenAPI client plus app services; `src/api/client-config.ts` is the only Axios import.
 - `src/hooks/queries/`, `src/hooks/mutations/` — TanStack Query hooks.
 - `src/lib/store/` — Zustand slices; `src/forms/` — react-hook-form plus zod.
 - `src/components/ui/` — copied shadcn and Kibo primitives; `src/components/` — app composition.
@@ -32,8 +32,8 @@ browser state, and transport, not server code or business rules.
 ## Commands
 
 Requires Node `^20.19.0 || >=22.13.0` and Bun 1.3 or newer. Run from the
-repository root. The [Makefile](Makefile) exposes the same targets as
-`make <target>`.
+repository root. The [Makefile](Makefile) wraps the same scripts; `make help`
+lists the targets.
 
 ```bash
 bun install              # install exact versions from bun.lock
