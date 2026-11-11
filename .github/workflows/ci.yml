@@ -6,6 +6,7 @@ name: CI
 # compares PR failures against.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
   schedule:
     - cron: '0 9 * * 0'
@@ -25,9 +26,38 @@ permissions:
 # Keep "Require approval for all outside collaborators" on in Actions
 # settings as well.
 jobs:
+  changes:
+    name: Detect changed areas
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Docs and spec only changes skip the jobs that need `changes`.
+      # Workflow files count as code. Non pull_request events always run.
+      - name: Detect code changes
+        id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" != "pull_request" ]; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --name-only "$BASE_SHA" HEAD | grep -qvE '^(tasks/specs/|docs/|\.github/ISSUE_TEMPLATE/)|\.md$'; then
+            echo "code=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "code=false" >> "$GITHUB_OUTPUT"
+          fi
   oxlint:
     name: Oxlint
     runs-on: &ci-runner ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || fromJSON('["self-hosted", "Linux", "X64", "react-rsbuild-kibo-boilerplate"]') }}
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -40,6 +70,8 @@ jobs:
   oxfmt:
     name: Oxfmt check
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -52,6 +84,8 @@ jobs:
   typecheck:
     name: Typecheck
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -64,6 +98,8 @@ jobs:
   build:
     name: Build
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -76,6 +112,8 @@ jobs:
   check-conventions:
     name: Check conventions
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -88,6 +126,8 @@ jobs:
   check-dependencies:
     name: Check dependencies
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -100,6 +140,8 @@ jobs:
   playwright:
     name: Playwright journeys (${{ matrix.shard }}/${{ strategy.job-total }})
     runs-on: *ci-runner
+    needs: changes
+    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     timeout-minutes: 30
     strategy:
       fail-fast: false
