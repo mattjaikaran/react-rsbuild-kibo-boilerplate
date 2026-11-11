@@ -6,7 +6,6 @@ name: CI
 # compares PR failures against.
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
   schedule:
     - cron: '0 9 * * 0'
@@ -66,7 +65,7 @@ jobs:
     name: Oxlint
     runs-on: &ci-runner ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || fromJSON('["self-hosted", "Linux", "X64", "react-rsbuild-kibo-boilerplate"]') }}
     needs: changes
-    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.code == 'true'
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -80,7 +79,6 @@ jobs:
     name: Oxfmt check
     runs-on: *ci-runner
     # oxfmt checks Markdown too, so docs-only changes still run it.
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -94,7 +92,7 @@ jobs:
     name: Typecheck
     runs-on: *ci-runner
     needs: changes
-    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.code == 'true'
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -108,7 +106,7 @@ jobs:
     name: Build
     runs-on: *ci-runner
     needs: changes
-    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.code == 'true'
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -122,7 +120,6 @@ jobs:
     name: Check conventions
     runs-on: *ci-runner
     # Reads README.md and DEPENDENCIES.md, so docs-only changes still run it.
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -136,7 +133,6 @@ jobs:
     name: Check dependencies
     runs-on: *ci-runner
     # Reads README.md and DEPENDENCIES.md, so docs-only changes still run it.
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -150,7 +146,7 @@ jobs:
     name: Playwright journeys (${{ matrix.shard }}/${{ strategy.job-total }})
     runs-on: *ci-runner
     needs: changes
-    if: needs.changes.outputs.frontend == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.frontend == 'true'
     timeout-minutes: 30
     strategy:
       fail-fast: false
