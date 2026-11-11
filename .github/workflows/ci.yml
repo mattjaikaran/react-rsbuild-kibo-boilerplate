@@ -112,8 +112,8 @@ jobs:
   check-conventions:
     name: Check conventions
     runs-on: *ci-runner
-    needs: changes
-    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    # Reads README.md and DEPENDENCIES.md, so docs-only changes still run it.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
@@ -126,8 +126,8 @@ jobs:
   check-dependencies:
     name: Check dependencies
     runs-on: *ci-runner
-    needs: changes
-    if: needs.changes.outputs.code == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    # Reads README.md and DEPENDENCIES.md, so docs-only changes still run it.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
