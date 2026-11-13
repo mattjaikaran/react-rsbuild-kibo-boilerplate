@@ -123,7 +123,9 @@ Playwright smoke and journey commands once the harness lands.
 
 `.github/workflows/ci.yml` runs the format, lint, typecheck, build, convention,
 and dependency gates as parallel jobs on every pull request, on demand, and
-weekly. The weekly run gives `agent-run merge` a `main` baseline. Jobs use the
+weekly; the React Doctor job runs on every pull request too, including
+docs-only ones, because `doctor.config.json` can change the scan. The weekly
+run gives `agent-run merge` a `main` baseline. Jobs use the
 repository's self-hosted runner on LXC 107; a pull request from a fork runs on
 `ubuntu-latest` instead, because fork code must never execute on a self-hosted
 runner. The sharded Playwright job skips until the W5 harness lands.
