@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 /**
  * Agent docs gate — AGENTS.md must exist, every relative link in it must
- * resolve, CLAUDE.md must only import it, and no legacy Cursor rules remain.
+ * resolve, no harness adapter (CLAUDE.md) remains, and no legacy Cursor rules
+ * remain. AGENTS.md is the only agent instruction file.
  *
  * Usage:
  *   bun run scripts/check_agent_docs.ts
@@ -76,19 +77,17 @@ function checkLinks(markdown: string): Violation[] {
   return violations
 }
 
-function checkClaudeImport(): Violation[] {
+function checkHarnessAdapters(): Violation[] {
   const claudePath = join(PROJECT_ROOT, 'CLAUDE.md')
   if (!existsSync(claudePath)) return []
 
-  const content = readFileSync(claudePath, 'utf-8').trim()
-  if (content === '@AGENTS.md') return []
-
   return [
     {
-      check: 'CLAUDE_NOT_IMPORT',
+      check: 'HARNESS_ADAPTER',
       filepath: 'CLAUDE.md',
       line: 1,
-      message: 'CLAUDE.md must be absent or contain only "@AGENTS.md"; edit AGENTS.md',
+      message:
+        'CLAUDE.md is a harness adapter; AGENTS.md is the only agent instruction file — delete this path',
     },
   ]
 }
@@ -124,7 +123,7 @@ function main(): number {
     violations.push(...checkLinks(readFileSync(agentsPath, 'utf-8')))
   }
 
-  violations.push(...checkClaudeImport())
+  violations.push(...checkHarnessAdapters())
   violations.push(...checkLegacyRules())
 
   if (violations.length === 0) {

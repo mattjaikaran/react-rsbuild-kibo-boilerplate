@@ -155,9 +155,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The W5 testing batch adds playwright.config.ts, the e2e/ directory,
-      # and the test:e2e script together. Until then this job stays green
-      # without claiming a Playwright result.
+      # playwright.config.ts ships the journey reporter; W5 adds the e2e/
+      # specs. Until a spec exists, test:e2e passes with no tests.
       - name: Detect the Playwright harness
         id: harness
         run: |

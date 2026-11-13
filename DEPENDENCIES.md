@@ -9,6 +9,7 @@ listed here. Add a row when you add a dependency.
 | @dnd-kit/sortable             | 10.0.0   |
 | @hey-api/openapi-ts           | 0.99.0   |
 | @hookform/resolvers           | 5.2.2    |
+| @playwright/test              | 1.65.0   |
 | @radix-ui/react-checkbox      | 1.3.2    |
 | @radix-ui/react-dialog        | 1.1.14   |
 | @radix-ui/react-dropdown-menu | 2.1.14   |

@@ -85,6 +85,7 @@ before an agent claims it.
 | `bun run doctor`        | Run pinned React Doctor, blocking errors |
 | `bun run typecheck`     | TypeScript type checking                 |
 | `bun run test`          | Run tests                                |
+| `bun run test:e2e`      | Playwright journeys, JSON report         |
 | `bun run test:watch`    | Run tests in watch mode                  |
 | `bun run test:coverage` | Tests with coverage report               |
 | `bun run check`         | Run typecheck + lint + test              |
