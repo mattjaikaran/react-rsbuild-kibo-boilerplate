@@ -2,7 +2,7 @@
 
 This is the authoritative repository-local guide for applying a new visual design
 without replacing the Rsbuild, TanStack Router, Zustand, shadcn/ui, or Kibo architecture.
-Update this guide before changing visual code; README.md and CLAUDE.md point here.
+Update this guide before changing visual code; README.md and AGENTS.md point here.
 
 ## Design brief
 

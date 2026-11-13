@@ -54,6 +54,27 @@ routes listed above, their smoke tests, and the database. Keep the contract in
 A journey that needs a live API starts the backend separately and points
 `PUBLIC_API_URL` at it. A journey marked "demo" must not depend on the API.
 
+## Journey test convention
+
+One Playwright test per journey, tagged with the journey ID, with each step in a
+`test.step` whose title starts with the step ID. Do not write a test per step.
+
+```ts
+test('visitor signs up and signs in', { tag: '@J-001' }, async ({ page }) => {
+  await test.step('J-001-S1: create an account', async () => {
+    // ...
+  })
+  await test.step('J-001-S2: sign in', async () => {
+    // ...
+  })
+})
+```
+
+[playwright.config.ts](../../playwright.config.ts) writes
+`test-results/journeys.json`, which the backend JOURNEYS gate reads to map a
+failing step. Step tags (`tag: ['@J-001', '@J-001-S1']`) cover a test without
+step titles. The full policy is in [docs/testing.md](../testing.md).
+
 ## Smoke tests
 
 One Playwright smoke test proves the built app boots and every journey's entry
@@ -63,6 +84,7 @@ route renders without a console error:
 `/auth/magic-link`, `/dashboard`, `/todos`, `/todos/create`, `/examples`,
 `/profile`, and `/settings`.
 
-The harness is not installed yet. Until W5, use the verification commands in
+`playwright.config.ts` and `bun run test:e2e` ship; the `e2e/` specs land in
+W5. Until then, use the verification commands in
 [docs/testing.md](../testing.md) and the browser review in
 [DESIGN.md](../../DESIGN.md).

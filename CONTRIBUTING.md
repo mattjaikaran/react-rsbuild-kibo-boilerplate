@@ -95,7 +95,7 @@ The format, status values, and executor rules live in
 ## Review process
 
 1. CI must pass: the gates in [AGENTS.md](AGENTS.md#verify), plus the smoke
-   and Playwright journeys that cover the change once the harness exists.
+   and Playwright journeys that cover the change once the W5 specs exist.
 2. `matt-reviewer` reviews every PR. Fix or answer each finding.
 3. `mattjaikaran` approves. A PR merges only with both approvals on its
    current head commit.
@@ -116,8 +116,8 @@ Testing policy: [docs/testing.md](docs/testing.md) and
 
 ## Local checks
 
-Run the verification gates in [AGENTS.md](AGENTS.md#verify) before a PR. Add the
-Playwright smoke and journey commands once the harness lands.
+Run the verification gates in [AGENTS.md](AGENTS.md#verify) before a PR. Once
+the W5 specs land, build and run them with `bun run build && bun run test:e2e`.
 
 ## CI
 
@@ -126,4 +126,5 @@ and dependency gates as parallel jobs on every pull request, on demand, and
 weekly. The weekly run gives `agent-run merge` a `main` baseline. Jobs use the
 repository's self-hosted runner on LXC 107; a pull request from a fork runs on
 `ubuntu-latest` instead, because fork code must never execute on a self-hosted
-runner. The sharded Playwright job skips until the W5 harness lands.
+runner. The sharded Playwright job runs the shipped config and passes with no
+tests until the W5 specs land.
