@@ -123,7 +123,9 @@ the W5 specs land, build and run them with `bun run build && bun run test:e2e`.
 
 `.github/workflows/ci.yml` runs the format, lint, typecheck, build, convention,
 and dependency gates as parallel jobs on every pull request, on demand, and
-weekly. The weekly run gives `agent-run merge` a `main` baseline. Jobs use the
+weekly; the React Doctor job runs on every pull request too, including
+docs-only ones, because `doctor.config.json` can change the scan. The weekly
+run gives `agent-run merge` a `main` baseline. Jobs use the
 repository's self-hosted runner on LXC 107; a pull request from a fork runs on
 `ubuntu-latest` instead, because fork code must never execute on a self-hosted
 runner. The sharded Playwright job runs the shipped config and passes with no
